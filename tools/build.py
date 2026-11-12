@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the T1 Research & Development multi-page website.
 
-Builds 18 pages (home, about, services, contact + 14 service pages),
+Builds 17 pages (home, about, services, contact + 13 service pages),
 sitemap.xml, robots.txt and a deploy README into the site root.
 
 Layout: this script lives in tools/. The site root is the tools/
@@ -10,7 +10,7 @@ working copy), otherwise the parent itself (repo checkout: tools/ sits
 next to the site files at the repo root).
 
 All copy is Brayden's own: the 17 liked AWS business ideas (Nov 11,
-easiest-to-hardest order) plus Photography as the 14th service.
+easiest-to-hardest order) plus Photography as the 13th service.
 Website design & hosting is the flagship offer, featured on the home
 page; it is also a choice in the contact form's service picker.
 Photos are Brayden's own @t1.research Instagram photography, already
@@ -195,31 +195,6 @@ SERVICES = [
              "Walton County and nearby."),
             ("What if you can't fix it?",
              "If it's beyond repair, I'll tell you straight and help you figure out the next step."),
-        ],
-    },
-    {
-        "slug": "family-security",
-        "name": "Family Security",
-        "short": "A security checkup for your whole family — strong passwords, two-factor authentication, and frozen credit.",
-        "price": "$99 one-time + $9/month",
-        "price_head": "$99 one-time + $9/month",
-        "price_note": "One checkup visit, then password manager hosting.",
-        "intro": [
-            "Most families are one reused password away from a bad week. In about an hour at your kitchen table, I set up a password manager for the family, turn on two-factor authentication everywhere it matters, and freeze your credit at all three bureaus.",
-            "After that, the $9 a month keeps your password manager hosted and running.",
-        ],
-        "features": [
-            "Password manager set up for the whole family",
-            "Two-factor authentication on your important accounts",
-            "Credit frozen at all three bureaus",
-            "Scam-proofing walkthrough — what to watch for",
-            "Ongoing password manager hosting",
-        ],
-        "faq": [
-            ("Is a password manager safe?",
-             "Yes — it's the single best step most families can take. Your passwords are encrypted, and only you hold the key."),
-            ("How long does the checkup take?",
-             "About an hour at your kitchen table."),
         ],
     },
 ]
@@ -435,8 +410,7 @@ GROUPS = [
      ["business-backup", "vpn", "security-system"]),
     ("home", "For Homes & Families",
      ["parental-controls", "family-backup", "tech-help",
-      "family-security", "smart-home", "cold-storage",
-      "game-servers"]),
+      "smart-home", "cold-storage", "game-servers"]),
     ("media", "Photography & Media",
      ["church-hosting", "photography"]),
 ]
@@ -650,7 +624,7 @@ def build_home():
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": SITE_NAME,
-        "description": "Websites, backups, and tech help for Walton County, Georgia. Website design and hosting, business and family backups, and 14 local services.",
+        "description": "Websites, backups, and tech help for Walton County, Georgia. Website design and hosting, business and family backups, and 13 local services.",
         "url": BASE_URL,
         "telephone": "+1-770-820-7364",
         "email": EMAIL,
@@ -707,7 +681,7 @@ def build_home():
   </main>
 """
     page = (head(f"{SITE_NAME} | Websites & Tech Services in Walton County, GA",
-                 "T1 Research & Development builds websites for Walton County businesses — plus backups, security, photography, and 14 local tech services. Local, honest, done right.",
+                 "T1 Research & Development builds websites for Walton County businesses — plus backups, security, photography, and 13 local tech services. Local, honest, done right.",
                  "index.html", json_ld=ld, preload="hero.jpg")
             + header("home") + content + footer())
     write_page("index.html", page)
@@ -742,7 +716,7 @@ def build_about():
             <p>I'm a photographer first (@t1.research on Instagram) and a tech person second. That combination is the whole business: websites that look good, backups that actually work, and tech help from someone who shows up in person.</p>
             <p>Every service here is something I do myself, for people I can meet face to face. When you call, you get me.</p>
             <div class="stat-row">
-              <div class="stat"><div class="value">14</div><div class="label">services offered</div></div>
+              <div class="stat"><div class="value">13</div><div class="label">services offered</div></div>
               <div class="stat"><div class="value">Walton County</div><div class="label">based in Georgia</div></div>
               <div class="stat"><div class="value">@t1.research</div><div class="label">photography on Instagram</div></div>
             </div>
@@ -807,7 +781,7 @@ def build_services_index():
     <section class="page-hero">
       <div class="container">
         <h1>Services</h1>
-        <p>14 services for Walton County businesses and families — plus website design &amp; hosting, our flagship. Click any service to learn more.</p>
+        <p>13 services for Walton County businesses and families — plus website design &amp; hosting, our flagship. Click any service to learn more.</p>
       </div>
     </section>
 
@@ -819,7 +793,7 @@ def build_services_index():
   </main>
 """
     page = (head(f"Services | {SITE_NAME}",
-                 "All 14 T1 Research & Development services: websites, backups, security, photography, smart homes, and more — for Walton County, Georgia businesses and families.",
+                 "All 13 T1 Research & Development services: websites, backups, security, photography, smart homes, and more — for Walton County, Georgia businesses and families.",
                  "services.html")
             + header("services") + content + footer())
     write_page("services.html", page)
@@ -900,7 +874,7 @@ def build_contact():
   </main>
 """
     page = (head(f"Contact | {SITE_NAME}",
-                 "Contact T1 Research & Development in Walton County, Georgia — call, text, email, or send a message about any of our 14 services.",
+                 "Contact T1 Research & Development in Walton County, Georgia — call, text, email, or send a message about any of our 13 services.",
                  "contact.html")
             + header("contact") + content + footer())
     write_page("contact.html", page)
@@ -1047,13 +1021,13 @@ def build_sitemap_robots_readme():
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-18-0f766e)
-![Services](https://img.shields.io/badge/services-14-0f766e)
+![Pages](https://img.shields.io/badge/pages-17-0f766e)
+![Services](https://img.shields.io/badge/services-13-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-An 18-page static website for T1 Research & Development — home, about,
-services, contact, and one page for each of the 14 services. All CSS
+A 17-page static website for T1 Research & Development — home, about,
+services, contact, and one page for each of the 13 services. All CSS
 lives in `assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
@@ -1072,9 +1046,9 @@ Premium $749 + $99/mo).
 ```
 ├── index.html            Home — hero, hosting tiers, services preview
 ├── about.html            About Brayden and T1 Research & Development
-├── services.html         All 14 services, one card each
+├── services.html         All 13 services, one card each
 ├── contact.html          Contact form with a service picker
-├── services/             One page per service (14)
+├── services/             One page per service (13)
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script
