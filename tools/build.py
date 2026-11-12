@@ -52,6 +52,15 @@ ICON_FACEBOOK = '<svg width="26" height="26" viewBox="0 0 24 24" fill="currentCo
 # so the footer uses the app-icon "n" in Nextdoor green (#8ED500) instead.
 ICON_NEXTDOOR = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="#8ED500"/><path d="M8 17.5V11a4 4 0 0 1 8 0v6.5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/></svg>'
 
+# Google Tag Manager (Brayden's container GTM-WBZLTTZM). Verbatim snippet he
+# supplied Nov 12 — kept as a constant because the braces would break f-strings.
+GTM_HEAD = """  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WBZLTTZM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>"""
+
 # ---------------------------------------------------------------- services
 # Order: Brayden's difficulty order, easiest first. Photography is #18.
 
@@ -541,6 +550,7 @@ def head(title, description, path, og_image="hero.jpg", json_ld=None, preload=No
 <html lang="en">
 <head>
   <meta charset="utf-8">
+{GTM_HEAD}
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
   <meta name="description" content="{description}">
