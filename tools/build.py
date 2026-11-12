@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the T1 Research & Development multi-page website.
 
-Builds 17 pages (home, about, services, contact + 13 service pages),
+Builds 18 pages (home, about, services, contact + 14 service pages),
 sitemap.xml, robots.txt and a deploy README into the site root.
 
 Layout: this script lives in tools/. The site root is the tools/
@@ -10,7 +10,7 @@ working copy), otherwise the parent itself (repo checkout: tools/ sits
 next to the site files at the repo root).
 
 All copy is Brayden's own: the 17 liked AWS business ideas (Nov 11,
-easiest-to-hardest order) plus Photography as the 13th service.
+easiest-to-hardest order) plus Photography as the 14th service.
 Website design & hosting is the flagship offer, featured on the home
 page; it is also a choice in the contact form's service picker.
 Photos are Brayden's own @t1.research Instagram photography, already
@@ -96,6 +96,33 @@ SERVICES = [
             ("Can it help me get a job?",
              "A clean personal site sets you apart — hiring managers remember the candidate with a real site."),
         ],
+    },
+    {
+        "slug": "photo-refresh",
+        "name": "Monthly Photo Refresh",
+        "short": "Fresh photos of your business every month — new shots for your site, Google, and social.",
+        "price": "$79–$149/month",
+        "price_head": "$79–$149/month",
+        "price_note": "Monthly on-site shoot. Edited photos, ready to post.",
+        "intro": [
+            "The same three photos from 2019 aren't doing your business any favors. I come out every month and shoot fresh photos — your products, your space, your people, the season — and deliver them edited and ready to post.",
+            "New shots for your website, your Google Business Profile, and your social feeds, every single month.",
+        ],
+        "features": [
+            "Monthly on-site photo shoot",
+            "Edited, web-ready photos delivered to you",
+            "Fresh shots for your site, Google, and social",
+            "Seasonal and new-product coverage",
+            "Shot by a photographer, not a phone snapshot",
+        ],
+        "faq": [
+            ("What do you shoot?",
+             "Products, your space, your team, seasonal displays — whatever shows your business at its best."),
+            ("How do I get the photos?",
+             "Delivered digitally, edited and ready to post, after each visit."),
+        ],
+        "images": [("p-flowers.jpg", "Fresh orange flowers, photographed for a local business"),
+                   ("p-pansy.jpg", "Close-up of a red pansy flower")],
     },
     {
         "slug": "parental-controls",
@@ -412,7 +439,7 @@ GROUPS = [
      ["parental-controls", "family-backup", "tech-help",
       "smart-home", "cold-storage", "game-servers"]),
     ("media", "Photography & Media",
-     ["church-hosting", "photography"]),
+     ["church-hosting", "photography", "photo-refresh"]),
 ]
 
 # Hosting tiers (flagship offer, featured on the home page).
@@ -624,7 +651,7 @@ def build_home():
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": SITE_NAME,
-        "description": "Websites, backups, and tech help for Walton County, Georgia. Website design and hosting, business and family backups, and 13 local services.",
+        "description": "Websites, backups, and tech help for Walton County, Georgia. Website design and hosting, business and family backups, and 14 local services.",
         "url": BASE_URL,
         "telephone": "+1-770-820-7364",
         "email": EMAIL,
@@ -681,7 +708,7 @@ def build_home():
   </main>
 """
     page = (head(f"{SITE_NAME} | Websites & Tech Services in Walton County, GA",
-                 "T1 Research & Development builds websites for Walton County businesses — plus backups, security, photography, and 13 local tech services. Local, honest, done right.",
+                 "T1 Research & Development builds websites for Walton County businesses — plus backups, security, photography, and 14 local tech services. Local, honest, done right.",
                  "index.html", json_ld=ld, preload="hero.jpg")
             + header("home") + content + footer())
     write_page("index.html", page)
@@ -716,7 +743,7 @@ def build_about():
             <p>I'm a photographer first (@t1.research on Instagram) and a tech person second. That combination is the whole business: websites that look good, backups that actually work, and tech help from someone who shows up in person.</p>
             <p>Every service here is something I do myself, for people I can meet face to face. When you call, you get me.</p>
             <div class="stat-row">
-              <div class="stat"><div class="value">13</div><div class="label">services offered</div></div>
+              <div class="stat"><div class="value">14</div><div class="label">services offered</div></div>
               <div class="stat"><div class="value">Walton County</div><div class="label">based in Georgia</div></div>
               <div class="stat"><div class="value">@t1.research</div><div class="label">photography on Instagram</div></div>
             </div>
@@ -781,7 +808,7 @@ def build_services_index():
     <section class="page-hero">
       <div class="container">
         <h1>Services</h1>
-        <p>13 services for Walton County businesses and families — plus website design &amp; hosting, our flagship. Click any service to learn more.</p>
+        <p>14 services for Walton County businesses and families — plus website design &amp; hosting, our flagship. Click any service to learn more.</p>
       </div>
     </section>
 
@@ -793,7 +820,7 @@ def build_services_index():
   </main>
 """
     page = (head(f"Services | {SITE_NAME}",
-                 "All 13 T1 Research & Development services: websites, backups, security, photography, smart homes, and more — for Walton County, Georgia businesses and families.",
+                 "All 14 T1 Research & Development services: websites, backups, security, photography, smart homes, and more — for Walton County, Georgia businesses and families.",
                  "services.html")
             + header("services") + content + footer())
     write_page("services.html", page)
@@ -874,7 +901,7 @@ def build_contact():
   </main>
 """
     page = (head(f"Contact | {SITE_NAME}",
-                 "Contact T1 Research & Development in Walton County, Georgia — call, text, email, or send a message about any of our 13 services.",
+                 "Contact T1 Research & Development in Walton County, Georgia — call, text, email, or send a message about any of our 14 services.",
                  "contact.html")
             + header("contact") + content + footer())
     write_page("contact.html", page)
@@ -1021,13 +1048,13 @@ def build_sitemap_robots_readme():
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-17-0f766e)
-![Services](https://img.shields.io/badge/services-13-0f766e)
+![Pages](https://img.shields.io/badge/pages-18-0f766e)
+![Services](https://img.shields.io/badge/services-14-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-A 17-page static website for T1 Research & Development — home, about,
-services, contact, and one page for each of the 13 services. All CSS
+An 18-page static website for T1 Research & Development — home, about,
+services, contact, and one page for each of the 14 services. All CSS
 lives in `assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
@@ -1046,9 +1073,9 @@ Premium $749 + $99/mo).
 ```
 ├── index.html            Home — hero, hosting tiers, services preview
 ├── about.html            About Brayden and T1 Research & Development
-├── services.html         All 13 services, one card each
+├── services.html         All 14 services, one card each
 ├── contact.html          Contact form with a service picker
-├── services/             One page per service (13)
+├── services/             One page per service (14)
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script

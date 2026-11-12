@@ -33,6 +33,8 @@ IMAGES = [
     ("18052607179709361", "g-atrium.jpg", 1200, 80),
     ("18443202094004021", "g-stringlights.jpg", 1200, 80),
     ("18006802411813776", "g-lake-sunset.jpg", 1200, 80),
+    ("17949688484693033", "p-flowers.jpg", 1200, 80),     # orange flowers — photo refresh
+    ("18116767366324014", "p-pansy.jpg", 1200, 80),       # red pansy — photo refresh
     # Walton County additions (Nov 12) — gallery grows 10 -> 18, home showcase + strip
     ("18330311167070894", "g-pink-sunset.jpg", 1200, 80), # pink sky over pines, Walton Co — 23 likes
     ("17875550037197338", "g-foggy-night.jpg", 1200, 80), # foggy night street, Monroe
