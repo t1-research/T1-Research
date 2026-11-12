@@ -77,7 +77,11 @@ p { margin: 0 0 1em; }
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  /* Must sit above the mobile menu backdrop (z-index 90): the drawer
+     lives inside the header, so the header's stacking context decides
+     whether the drawer is tappable. At 50 the backdrop covered the
+     drawer and every tap on a menu link just closed the menu. */
+  z-index: 100;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
   transition: box-shadow 0.2s ease;
