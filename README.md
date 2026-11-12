@@ -1,9 +1,4 @@
 # T1 Research & Development — Website
-Web & Media — Monroe, Georgia
-##
-
-A 22-page static website: home, about, services, contact, and one page
-for each of the 18 services. 
 
 ## 📷 Photos
 
