@@ -1,7 +1,6 @@
 # T1 Research & Development — Website
 Web & Media — Monroe, Georgia
-
-!Sunset over the ocean, photographed by Brayden Downey
+##
 
 A 22-page static website: home, about, services, contact, and one page
 for each of the 18 services. 
