@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the T1 Research & Development multi-page website.
 
-Builds 22 pages (home, about, services, contact + 18 service pages),
+Builds 18 pages (home, about, services, contact + 14 service pages),
 sitemap.xml, robots.txt and a deploy README into the site root.
 
 Layout: this script lives in tools/. The site root is the tools/
@@ -10,7 +10,7 @@ working copy), otherwise the parent itself (repo checkout: tools/ sits
 next to the site files at the repo root).
 
 All copy is Brayden's own: the 17 liked AWS business ideas (Nov 11,
-easiest-to-hardest order) plus Photography as the 18th service.
+easiest-to-hardest order) plus Photography as the 14th service.
 Website design & hosting is the flagship offer, featured on the home
 page; it is also a choice in the contact form's service picker.
 Photos are Brayden's own @t1.research Instagram photography, already
@@ -95,58 +95,6 @@ SERVICES = [
              "Your résumé, a photo, and any links you want on the page. I handle the rest."),
             ("Can it help me get a job?",
              "A clean personal site sets you apart — hiring managers remember the candidate with a real site."),
-        ],
-    },
-    {
-        "slug": "photo-refresh",
-        "name": "Monthly Photo Refresh",
-        "short": "Fresh photos of your business every month — new shots for your site, Google, and social.",
-        "price": "$79–$149/month",
-        "price_head": "$79–$149/month",
-        "price_note": "Monthly on-site shoot. Edited photos, ready to post.",
-        "intro": [
-            "The same three photos from 2019 aren't doing your business any favors. I come out every month and shoot fresh photos — your products, your space, your people, the season — and deliver them edited and ready to post.",
-            "New shots for your website, your Google Business Profile, and your social feeds, every single month.",
-        ],
-        "features": [
-            "Monthly on-site photo shoot",
-            "Edited, web-ready photos delivered to you",
-            "Fresh shots for your site, Google, and social",
-            "Seasonal and new-product coverage",
-            "Shot by a photographer, not a phone snapshot",
-        ],
-        "faq": [
-            ("What do you shoot?",
-             "Products, your space, your team, seasonal displays — whatever shows your business at its best."),
-            ("How do I get the photos?",
-             "Delivered digitally, edited and ready to post, after each visit."),
-        ],
-        "images": [("p-flowers.jpg", "Fresh orange flowers, photographed for a local business"),
-                   ("p-pansy.jpg", "Close-up of a red pansy flower")],
-    },
-    {
-        "slug": "home-inventory",
-        "name": "Home Inventory for Insurance",
-        "short": "A photo catalog of everything you own, stored safely offsite — so a claim takes hours, not weeks.",
-        "price": "$149 one-time + $9/month",
-        "price_head": "$149 one-time + $9/month",
-        "price_note": "One visit to catalog everything. Secure offsite storage after that.",
-        "intro": [
-            "After a fire or a burglary, your insurer asks what you owned — and from memory, most people get about half of it. I photograph and catalog your belongings room by room, record serial numbers and receipts, and store it all safely offsite.",
-            "If you ever need to file a claim, the proof is ready on day one.",
-        ],
-        "features": [
-            "Room-by-room photo catalog of your belongings",
-            "Serial numbers and receipts recorded",
-            "Stored offsite in encrypted cloud storage",
-            "Update it when you buy something big",
-            "Ready for your insurer whenever you need it",
-        ],
-        "faq": [
-            ("Why not just take photos myself?",
-             "You can — but most people never finish. I do the whole house in one visit and keep it organized."),
-            ("Is my information private?",
-             "Yes. Your inventory is encrypted, and only you can access it."),
         ],
     },
     {
@@ -328,56 +276,6 @@ SERVICES += [
         ],
     },
     {
-        "slug": "competitor-watch",
-        "name": "Competitor Watch Report",
-        "short": "A monthly report on what your competitors are doing — prices, reviews, new services, and openings.",
-        "price": "$49/month",
-        "price_head": "$49/month",
-        "price_note": "Up to five competitors tracked. Plain-English report, monthly.",
-        "intro": [
-            "You can't out-compete what you can't see. Every month I research your top competitors — their prices, their reviews, their new services, what's opening and closing — and send you a plain-English report.",
-            "Spot the gaps, price with confidence, and see what customers are saying about the other guy.",
-        ],
-        "features": [
-            "Monthly report on your top competitors",
-            "Price and service changes tracked",
-            "Review trends — what customers praise and complain about",
-            "New openings and closings in your area",
-            "Plain English, no jargon",
-        ],
-        "faq": [
-            ("How many competitors do you track?",
-             "Up to five — your choice."),
-            ("What do I do with the report?",
-             "Use it to price with confidence, spot services nobody nearby offers, and fix the things customers complain about before they complain about you."),
-        ],
-    },
-    {
-        "slug": "digitizing",
-        "name": "Digitizing & Archiving",
-        "short": "Paper files and family photos, scanned and stored safely — searchable, backed up, and always findable.",
-        "price": "Documents $199+/cabinet + $29/month · Photos $199–$499/box + $9/month",
-        "price_head": "From $199",
-        "price_note": "Documents $199+/cabinet + $29/mo · Family photos & video $199–$499/box + $9/mo.",
-        "intro": [
-            "The filing cabinet in the back room and the box of family photos in the closet have the same problem: if something happens to them, they're gone. I scan documents and photos to digital, organize them, and store them safely in the cloud.",
-            "Your originals come back to you. The digital copies stay searchable, backed up, and findable forever.",
-        ],
-        "features": [
-            "Documents scanned and searchable",
-            "Family photos and video digitized",
-            "Organized by year and topic",
-            "Stored in encrypted cloud storage",
-            "Originals returned to you",
-        ],
-        "faq": [
-            ("What do you do with my originals?",
-             "They're yours — I return everything after scanning."),
-            ("How long does it take?",
-             "It depends on volume. A box of photos is usually a week or two."),
-        ],
-    },
-    {
         "slug": "business-backup",
         "name": "Business Backup",
         "short": "Your business files and cloud apps, backed up automatically every night — with a monthly restore test that proves it works.",
@@ -529,16 +427,15 @@ SERVICES += [
 # Service groups, "by who it's for" (Brayden's pick, Nov 12). Order within
 # each group follows the SERVICES list (easiest -> hardest). Website design
 # & hosting is the flagship and lives outside the groups (home page tiers,
-# services-page CTA band, first contact-form option).
+# first card under Websites on the services page, first contact-form option).
 GROUPS = [
     ("websites", "Websites",
      ["link-in-bio", "personal-website"]),
     ("business", "For Businesses",
-     ["photo-refresh", "competitor-watch", "business-backup", "vpn",
-      "security-system"]),
+     ["business-backup", "vpn", "security-system"]),
     ("home", "For Homes & Families",
-     ["home-inventory", "parental-controls", "family-backup", "tech-help",
-      "family-security", "smart-home", "cold-storage", "digitizing",
+     ["parental-controls", "family-backup", "tech-help",
+      "family-security", "smart-home", "cold-storage",
       "game-servers"]),
     ("media", "Photography & Media",
      ["church-hosting", "photography"]),
@@ -753,7 +650,7 @@ def build_home():
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": SITE_NAME,
-        "description": "Websites, backups, and tech help for Walton County, Georgia. Website design and hosting, business and family backups, and 18 local services.",
+        "description": "Websites, backups, and tech help for Walton County, Georgia. Website design and hosting, business and family backups, and 14 local services.",
         "url": BASE_URL,
         "telephone": "+1-770-820-7364",
         "email": EMAIL,
@@ -810,7 +707,7 @@ def build_home():
   </main>
 """
     page = (head(f"{SITE_NAME} | Websites & Tech Services in Walton County, GA",
-                 "T1 Research & Development builds websites for Walton County businesses — plus backups, security, photography, and 18 local tech services. Local, honest, done right.",
+                 "T1 Research & Development builds websites for Walton County businesses — plus backups, security, photography, and 14 local tech services. Local, honest, done right.",
                  "index.html", json_ld=ld, preload="hero.jpg")
             + header("home") + content + footer())
     write_page("index.html", page)
@@ -845,7 +742,7 @@ def build_about():
             <p>I'm a photographer first (@t1.research on Instagram) and a tech person second. That combination is the whole business: websites that look good, backups that actually work, and tech help from someone who shows up in person.</p>
             <p>Every service here is something I do myself, for people I can meet face to face. When you call, you get me.</p>
             <div class="stat-row">
-              <div class="stat"><div class="value">18</div><div class="label">services offered</div></div>
+              <div class="stat"><div class="value">14</div><div class="label">services offered</div></div>
               <div class="stat"><div class="value">Walton County</div><div class="label">based in Georgia</div></div>
               <div class="stat"><div class="value">@t1.research</div><div class="label">photography on Instagram</div></div>
             </div>
@@ -910,7 +807,7 @@ def build_services_index():
     <section class="page-hero">
       <div class="container">
         <h1>Services</h1>
-        <p>18 services for Walton County businesses and families — plus website design &amp; hosting, our flagship. Click any service to learn more.</p>
+        <p>14 services for Walton County businesses and families — plus website design &amp; hosting, our flagship. Click any service to learn more.</p>
       </div>
     </section>
 
@@ -922,7 +819,7 @@ def build_services_index():
   </main>
 """
     page = (head(f"Services | {SITE_NAME}",
-                 "All 18 T1 Research & Development services: websites, backups, security, photography, smart homes, and more — for Walton County, Georgia businesses and families.",
+                 "All 14 T1 Research & Development services: websites, backups, security, photography, smart homes, and more — for Walton County, Georgia businesses and families.",
                  "services.html")
             + header("services") + content + footer())
     write_page("services.html", page)
@@ -1003,7 +900,7 @@ def build_contact():
   </main>
 """
     page = (head(f"Contact | {SITE_NAME}",
-                 "Contact T1 Research & Development in Walton County, Georgia — call, text, email, or send a message about any of our 18 services.",
+                 "Contact T1 Research & Development in Walton County, Georgia — call, text, email, or send a message about any of our 14 services.",
                  "contact.html")
             + header("contact") + content + footer())
     write_page("contact.html", page)
@@ -1150,13 +1047,13 @@ def build_sitemap_robots_readme():
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-22-0f766e)
-![Services](https://img.shields.io/badge/services-18-0f766e)
+![Pages](https://img.shields.io/badge/pages-18-0f766e)
+![Services](https://img.shields.io/badge/services-14-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-A 22-page static website for T1 Research & Development — home, about,
-services, contact, and one page for each of the 18 services. All CSS
+An 18-page static website for T1 Research & Development — home, about,
+services, contact, and one page for each of the 14 services. All CSS
 lives in `assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
@@ -1175,9 +1072,9 @@ Premium $749 + $99/mo).
 ```
 ├── index.html            Home — hero, hosting tiers, services preview
 ├── about.html            About Brayden and T1 Research & Development
-├── services.html         All 18 services, one card each
+├── services.html         All 14 services, one card each
 ├── contact.html          Contact form with a service picker
-├── services/             One page per service (18)
+├── services/             One page per service (14)
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script
