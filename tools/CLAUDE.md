@@ -50,7 +50,7 @@ detect which layout they're in.)
 - The site itself: `index.html`, `about.html`, `services.html`,
   `contact.html`, `services/` (18 pages), `assets/` (`site.css` and
   `site.js`, hand-edited — `build.py` never touches them), `images/`
-  (the 23 optimized photos), `sitemap.xml`, `robots.txt`, `README.md`.
+  (the 22 optimized photos), `sitemap.xml`, `robots.txt`, `README.md`.
 - Pulling photos from Instagram stays with Sabrent — that step needs his
   Instagram access and isn't in this repo.
 - Do NOT commit `site.muse-github-snapshot-sync.json` (sync metadata).

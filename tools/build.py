@@ -783,34 +783,6 @@ def build_home():
           <ul>{feats}</ul>
           <a class="btn btn-primary btn-block" href="contact.html?plan={t['key']}">Start with {t['name']}</a>
         </div>""")
-    featured_slugs = ["business-backup", "link-in-bio", "family-backup",
-                      "photo-refresh", "church-hosting", "photography"]
-    featured = [s for s in SERVICES if s["slug"] in featured_slugs]
-    cards = "\n".join(service_card(s) for s in featured)
-    strip = (
-        img_tag("downtown.jpg", "A brick downtown building in Walton County, Georgia")
-        + "\n          "
-        + img_tag("field.jpg", "Green Georgia field under a blue sky")
-        + "\n          "
-        + img_tag("g-dusk-orange.jpg", "Orange dusk over Walton County")
-    )
-    night_strip = (
-        img_tag("g-starry-pines.jpg", "Stars over the pines")
-        + "\n          "
-        + img_tag("g-neon-storefront.jpg", "Neon storefront at night")
-        + "\n          "
-        + img_tag("g-stringlights.jpg", "String lights in the trees at night")
-    )
-    home_faq = [
-        ("Where are you located?",
-         "Walton County, Georgia. Most of our work is for local businesses and families in Walton County, and several services work anywhere."),
-        ("How do we start?",
-         "Get in touch and tell us what you need. We'll talk through it — free, no pressure — and you'll get a straight answer on what it costs."),
-        ("Do you work with businesses outside Walton County?",
-         "Yes. Walk-in services like photo shoots and house calls are local, but websites, backups, hosting, and most online services work anywhere."),
-        ("How do I pay?",
-         "Setup fees are paid up front, and monthly care is billed monthly by invoice. We'll confirm the details before any work starts."),
-    ]
     content = f"""<main id="main">
     <section class="hero-image">
       {hero}
@@ -835,66 +807,6 @@ def build_home():
       </div>
     </section>
 
-    <section class="section section-soft">
-      <div class="container">
-        <h2>More than websites — 18 services</h2>
-        <p class="section-lead">Backups, security, photography, smart homes, and more. One local person to call for all of it.</p>
-        <div class="services-grid">
-          {cards}
-        </div>
-        <p class="center gap-top"><a class="btn btn-primary" href="services.html">See all 18 services</a></p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2>Local to Walton County</h2>
-        <p class="section-lead">I'm Brayden Downey. I live here, I shoot here, and I work here. When you call, you get me — not a ticket queue, not a call center.</p>
-        <div class="photo-strip">
-          {strip}
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2>Walton County after dark</h2>
-        <p class="section-lead">Night shots from around the county — stars, streetlights, and neon.</p>
-        <div class="photo-strip">
-          {night_strip}
-        </div>
-        <p class="center gap-top"><a class="btn btn-primary" href="services/photography.html">See all the photography</a></p>
-      </div>
-    </section>
-
-    <section class="section section-soft">
-      <div class="container">
-        <h2>How it works</h2>
-        <div class="grid grid-4 steps">
-          <div class="step"><h3>Free consult</h3><p>Tell me what you need. I'll give you a straight answer on what it costs.</p></div>
-          <div class="step"><h3>Design &amp; build</h3><p>I build it and keep you in the loop as it comes together.</p></div>
-          <div class="step"><h3>Review &amp; launch</h3><p>You review it, we fix what's off, then it goes live.</p></div>
-          <div class="step"><h3>Care &amp; updates</h3><p>Monthly care keeps everything fast, secure, and up to date.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2>Questions, answered</h2>
-        {faq_block(home_faq)}
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="cta-band">
-          <h2>Ready to get started?</h2>
-          <p>Tell us what you need — a website, a backup, a photo shoot, or something else entirely.</p>
-          <a class="btn btn-primary" href="contact.html">Get in touch</a>
-        </div>
-      </div>
-    </section>
   </main>
 """
     page = (head(f"{SITE_NAME} | Websites & Tech Services in Walton County, GA",
