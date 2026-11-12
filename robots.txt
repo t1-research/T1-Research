@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://t1test.vercel.app/sitemap.xml
+Sitemap: https://t1-research.vercel.app/sitemap.xml
