@@ -42,6 +42,8 @@ CITY = "Walton County, Georgia"
 BASE_URL = "https://t1-research.vercel.app"
 FORMSUBMIT = "https://formsubmit.co/7e187b0c46c60a1073f4bba1528b454c"
 INSTAGRAM = "https://www.instagram.com/t1.research"
+FACEBOOK = "https://www.facebook.com/profile.php?id=61596618475986"
+NEXTDOOR = "https://nextdoor.com/page/t1-research-development-monroe-ga"
 
 # ---------------------------------------------------------------- services
 # Order: Brayden's difficulty order, easiest first. Photography is #18.
@@ -602,8 +604,11 @@ def footer(depth=""):
         </div>
         <div>
           <p><strong>Photography</strong><br>
-          <a href="{INSTAGRAM}">@t1.research on Instagram</a><br>
           <a href="{depth}services/photography.html">Photography service</a></p>
+          <p><strong>Socials</strong><br>
+          <a href="{INSTAGRAM}">@t1.research on Instagram</a><br>
+          <a href="{FACEBOOK}">T1 Research &amp; Development on Facebook</a><br>
+          <a href="{NEXTDOOR}">T1 Research &amp; Development on Nextdoor</a></p>
         </div>
       </div>
       <p class="footer-note">&copy; 2026 {SITE_NAME}. All photography on this site is by Brayden Downey, from @t1.research.</p>
@@ -662,7 +667,7 @@ def build_home():
             "addressCountry": "US",
         },
         "areaServed": "Walton County, Georgia",
-        "sameAs": [INSTAGRAM],
+        "sameAs": [INSTAGRAM, FACEBOOK, NEXTDOOR],
     }
     hero = img_tag("hero.jpg", "Sunset over the ocean, photographed by Brayden Downey",
                    cls="hero-photo", lazy=False, fetchpriority="high")
@@ -1101,6 +1106,8 @@ the web (hero 1440px, gallery 1200px, progressive JPEG).
 - **Phone:** [{PHONE}]({PHONE_TEL})
 - **Email:** [{EMAIL}](mailto:{EMAIL})
 - **Instagram:** [@t1.research](https://www.instagram.com/t1.research)
+- **Facebook:** [T1 Research & Development](https://www.facebook.com/profile.php?id=61596618475986)
+- **Nextdoor:** [T1 Research & Development](https://nextdoor.com/page/t1-research-development-monroe-ga)
 """
     write_page("README.md", readme)
 

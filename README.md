@@ -72,3 +72,5 @@ the web (hero 1440px, gallery 1200px, progressive JPEG).
 - **Phone:** [770-820-7364](tel:+17708207364)
 - **Email:** [tasikxdevelopment@gmail.com](mailto:tasikxdevelopment@gmail.com)
 - **Instagram:** [@t1.research](https://www.instagram.com/t1.research)
+- **Facebook:** [T1 Research & Development](https://www.facebook.com/profile.php?id=61596618475986)
+- **Nextdoor:** [T1 Research & Development](https://nextdoor.com/page/t1-research-development-monroe-ga)
