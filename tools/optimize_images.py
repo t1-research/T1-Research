@@ -22,7 +22,6 @@ os.makedirs(DST, exist_ok=True)
 IMAGES = [
     ("18001798849928156", "hero.jpg", 1600, 82),          # ocean sunset — home hero
     ("17869982618862800", "about-field.jpg", 1200, 80),   # sunset over GA field — about
-    ("18253479493120978", "downtown.jpg", 1200, 80),      # brick downtown building — home
     ("17987568299073347", "field.jpg", 1200, 80),         # green field, blue sky — home
     ("17970717179271652", "g-sunset-red.jpg", 1200, 80),  # red sunset over water
     ("17884440345053432", "g-portrait-wisteria.jpg", 1200, 80),

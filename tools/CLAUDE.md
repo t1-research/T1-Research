@@ -50,7 +50,7 @@ detect which layout they're in.)
 - The site itself: `index.html`, `about.html`, `services.html`,
   `contact.html`, `services/` (18 pages), `assets/` (`site.css` and
   `site.js`, hand-edited — `build.py` never touches them), `images/`
-  (the 23 optimized photos), `sitemap.xml`, `robots.txt`, `README.md`.
+  (the 22 optimized photos), `sitemap.xml`, `robots.txt`, `README.md`.
 - Pulling photos from Instagram stays with Sabrent — that step needs his
   Instagram access and isn't in this repo.
 - Do NOT commit `site.muse-github-snapshot-sync.json` (sync metadata).
@@ -88,7 +88,7 @@ detect which layout they're in.)
 
 ## Version naming
 
-Releases are named v0.02, v0.03, v0.04, … (current: v0.06). Commit
+Releases are named v0.02, v0.03, v0.04, … (current: v0.08). Commit
 messages start with the version and a plain summary, e.g.
 "v0.06 grouped the services by who they're for", with a body listing
 every change made.
