@@ -106,7 +106,7 @@ p { margin: 0 0 1em; }
 }
 
 .brand-name { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
-.brand-tag { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); font-weight: 700; }
+.brand-tag { font-size: 0.78rem; letter-spacing: 0.02em; color: var(--teal); font-weight: 700; max-width: 360px; line-height: 1.3; }
 
 .nav-toggle {
   display: none;
@@ -503,7 +503,7 @@ form textarea { min-height: 120px; resize: vertical; }
 .site-footer a:hover { color: var(--teal-bright); }
 .footer-inner { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between; }
 .footer-brand { font-weight: 800; color: #ffffff; font-size: 1.1rem; }
-.footer-tag { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal-bright); }
+.footer-tag { font-size: 0.8rem; letter-spacing: 0.02em; color: var(--teal-bright); line-height: 1.4; }
 .footer-note { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid #26404f; font-size: 0.9rem; color: #8ba0ab; }
 
 /* ---------- Responsive ---------- */
@@ -524,6 +524,7 @@ form textarea { min-height: 120px; resize: vertical; }
   .gallery figure:first-child { grid-column: span 1; grid-row: span 1; }
   .hero-image h1 { font-size: 2.1rem; }
   .nav-toggle { display: block; }
+  .brand-tag { font-size: 0.68rem; max-width: 235px; }
 
   /* Mobile menu: slide-in drawer from the right. */
   .site-nav {

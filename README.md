@@ -1,6 +1,8 @@
 # T1 Research & Development
 
-**Web & Media — Walton County, Georgia**
+**Websites, Technology & Digital Solutions for Businesses and Homes.**
+
+*Walton County, Georgia*
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
