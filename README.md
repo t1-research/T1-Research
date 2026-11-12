@@ -10,7 +10,9 @@
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
 A 22-page static website for T1 Research & Development — home, about,
-services, contact, and one page for each of the 18 services. 
+services, contact, and one page for each of the 18 services. All CSS
+lives in `assets/site.css` and all JavaScript in `assets/site.js` —
+no inline styling or scripting, no build step, no dependencies.
 
 ## ✨ Services
 

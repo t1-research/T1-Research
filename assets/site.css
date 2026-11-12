@@ -460,6 +460,8 @@ form textarea { min-height: 120px; resize: vertical; }
 
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .gallery figure { margin: 0; }
+/* First gallery photo is the feature: twice as big, top-left. */
+.gallery figure:first-child { grid-column: span 2; grid-row: span 2; }
 .gallery img {
   width: 100%;
   height: 100%;
@@ -478,6 +480,17 @@ form textarea { min-height: 120px; resize: vertical; }
   border-radius: var(--radius);
   display: block;
   aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+/* ---------- Photography showcase (home page) ---------- */
+
+.showcase-feature { margin-bottom: 1rem; }
+.showcase-feature img {
+  width: 100%;
+  border-radius: var(--radius);
+  display: block;
+  aspect-ratio: 21 / 9;
   object-fit: cover;
 }
 
@@ -509,6 +522,7 @@ form textarea { min-height: 120px; resize: vertical; }
 @media (max-width: 860px) {
   .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .services-grid, .gallery { grid-template-columns: repeat(2, 1fr); }
+  .gallery figure:first-child { grid-column: span 2; grid-row: span 1; }
   .service-layout { grid-template-columns: 1fr; }
   .price-box { position: static; }
 }
@@ -518,6 +532,8 @@ form textarea { min-height: 120px; resize: vertical; }
   .hero h1 { font-size: 2.1rem; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .services-grid, .gallery, .photo-strip { grid-template-columns: 1fr; }
+  .gallery figure:first-child { grid-column: span 1; grid-row: span 1; }
+  .showcase-feature img { aspect-ratio: 16 / 10; }
   .hero-image h1 { font-size: 2.1rem; }
   .nav-toggle { display: block; }
 
