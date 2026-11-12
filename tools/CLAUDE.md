@@ -88,7 +88,7 @@ detect which layout they're in.)
 
 ## Version naming
 
-Releases are named v0.02, v0.03, v0.04, … (current: v0.06). Commit
+Releases are named v0.02, v0.03, v0.04, … (current: v0.08). Commit
 messages start with the version and a plain summary, e.g.
 "v0.06 grouped the services by who they're for", with a body listing
 every change made.
