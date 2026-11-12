@@ -165,13 +165,13 @@ for e in expected:
         errors.append(f"contact.html: service option missing: {e}")
 print(f"contact form options: {len(opts)} (expect {len(expected) + 5} incl. placeholders + plans)")
 
-# Services index: 18 cards
+# Services index: 18 service cards + flagship website card
 with open(os.path.join(SITE, "services.html"), encoding="utf-8") as f:
     services_html = f.read()
 n_cards = services_html.count('class="service-card"')
-print(f"services index cards: {n_cards} (expect 18)")
-if n_cards != 18:
-    errors.append(f"services.html: {n_cards} cards, expected 18")
+print(f"services index cards: {n_cards} (expect 19)")
+if n_cards != 19:
+    errors.append(f"services.html: {n_cards} cards, expected 19")
 
 # Sitemap covers all pages
 with open(os.path.join(SITE, "sitemap.xml"), encoding="utf-8") as f:

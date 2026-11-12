@@ -973,9 +973,22 @@ def build_services_index():
     grouped_slugs = [slug for _key, _title, slugs in GROUPS for slug in slugs]
     assert sorted(grouped_slugs) == sorted(by_slug), \
         "GROUPS must cover every service exactly once"
+    # The flagship has no service page of its own — its card links to the
+    # contact form with website hosting preselected.
+    flagship_card = """<div class="service-card-wrap">
+          <a class="service-card" href="contact.html?service=website-hosting">
+            <h3>Website Design &amp; Hosting</h3>
+            <p>Professional websites for local businesses — designed, hosted, and looked after every month.</p>
+            <span class="price">From $349 setup + $49/mo</span>
+            <span class="more">Get started →</span>
+          </a>
+        </div>"""
     sections = []
-    for _key, title, slugs in GROUPS:
-        cards = "\n".join(service_card(by_slug[slug]) for slug in slugs)
+    for key, title, slugs in GROUPS:
+        cards = [service_card(by_slug[slug]) for slug in slugs]
+        if key == "websites":
+            cards.insert(0, flagship_card)
+        cards = "\n".join(cards)
         sections.append(f"""<h2 class="group-heading">{title}</h2>
         <div class="services-grid">
           {cards}
@@ -992,11 +1005,6 @@ def build_services_index():
     <section class="section">
       <div class="container">
         {grouped}
-        <div class="cta-band gap-top-lg">
-          <h2>Need a website?</h2>
-          <p>Website design &amp; hosting is our flagship service — three plans, built for local businesses.</p>
-          <a class="btn btn-primary" href="contact.html?service=website-hosting">Talk about your website</a>
-        </div>
       </div>
     </section>
   </main>

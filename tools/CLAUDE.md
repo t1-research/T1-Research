@@ -40,8 +40,8 @@ detect which layout they're in.)
 - `tools/build.py` — everything: content, templates, page builders. The
   site's single source of truth.
 - `tools/verify.py` — checks: no inline styles/scripts (except JSON-LD),
-  no broken links, SEO tags on all 22 pages, contact form action, 18
-  service cards on the services index, sitemap coverage.
+  no broken links, SEO tags on all 22 pages, contact form action, 19
+  cards on the services index (18 services + flagship), sitemap coverage.
 - `tools/optimize_images.py` — optimizes new photos into `images/`. Run
   it BEFORE `build.py`, because the builder reads image dimensions at
   build time (every `<img>` gets explicit width/height). It reads
@@ -75,8 +75,9 @@ detect which layout they're in.)
   cover every service exactly once (the builder asserts this), and the
   contact-form dropdown groups must match it.
 - Website design & hosting is the flagship. It has no service page of its
-  own — it lives on the home page, the services-page CTA band, and as the
-  first contact-form option.
+  own — it lives on the home page, as the first card under Websites on
+  the services page (linking to the contact form with website hosting
+  preselected), and as the first contact-form option.
 
 ## Branches
 
