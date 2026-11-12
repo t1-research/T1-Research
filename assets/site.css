@@ -410,6 +410,8 @@ form textarea { min-height: 120px; resize: vertical; }
 /* ---------- Services grid ---------- */
 
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.group-heading { margin: 2.5rem 0 1.25rem; }
+.group-heading:first-child { margin-top: 0; }
 .service-card {
   display: flex;
   flex-direction: column;
