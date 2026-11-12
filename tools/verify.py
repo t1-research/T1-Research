@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Verify the generated site: no inline styles/scripts (outside JSON-LD
-and the pre-existing standalone mocks), no broken internal links or
-images, SEO tags present on every page, form wired correctly."""
+"""Verify the generated site: no inline styles/scripts (outside JSON-LD,
+the GTM setup block, and the pre-existing standalone mocks), no broken
+internal links or images, SEO tags present on every page, form wired correctly."""
 import os
 import re
 import sys
@@ -28,6 +28,8 @@ class Checker(HTMLParser):
         self.links = []
         self.images = []
         self.scripts = []
+        self.pending_inline = False
+        self.pending_data = ""
         self.inline_styles = 0
         self.inline_handlers = 0
         self.title = ""
@@ -58,8 +60,13 @@ class Checker(HTMLParser):
             self.scripts.append(d.get("src", "INLINE"))
             if d.get("type") == "application/ld+json":
                 pass  # data block, not scripting
-            elif not d.get("src"):
-                errors.append(f"{self.path}: inline <script> (not JSON-LD)")
+            elif d.get("src"):
+                pass  # external script (site.js, GTM loader)
+            else:
+                # Inline script: allowed only for the GTM setup block
+                # (dataLayer/gtag); judged on its content at </script>.
+                self.pending_inline = True
+                self.pending_data = ""
         if tag == "title":
             self.in_title = True
         if tag == "meta":
@@ -71,10 +78,16 @@ class Checker(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "title":
             self.in_title = False
+        if tag == "script" and self.pending_inline:
+            self.pending_inline = False
+            if "dataLayer" not in self.pending_data or "gtag" not in self.pending_data:
+                errors.append(f"{self.path}: inline <script> (not JSON-LD)")
 
     def handle_data(self, data):
         if self.in_title:
             self.title += data
+        if self.pending_inline:
+            self.pending_data += data
 
 
 def check_page(rel):

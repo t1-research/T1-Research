@@ -473,6 +473,8 @@ form textarea { min-height: 120px; resize: vertical; }
 .footer-brand { font-weight: 800; color: #ffffff; font-size: 1.1rem; }
 .footer-tag { font-size: 0.8rem; letter-spacing: 0.02em; color: var(--teal-bright); line-height: 1.4; }
 .footer-note { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid #26404f; font-size: 0.9rem; color: #8ba0ab; }
+.social-icons { display: flex; gap: 0.9rem; margin-top: 0.4rem; }
+.social-icons svg { width: 26px; height: 26px; display: block; }
 
 /* ---------- Responsive ---------- */
 
