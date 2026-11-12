@@ -6,19 +6,6 @@ Web & Media — Monroe, Georgia
 A 22-page static website: home, about, services, contact, and one page
 for each of the 18 services. 
 
-## 📁 Structure
-├── index.html            Home — hero, hosting tiers, services preview
-├── about.html            About Brayden and T1 Research & Development
-├── services.html         All 18 services, one card each
-├── contact.html          Contact form with a service picker
-├── services/             One page per service (18)
-├── assets/
-│   ├── site.css          The only stylesheet
-│   └── site.js           The only script
-├── images/               16 optimized @t1.research photos
-├── sitemap.xml
-└── robots.txt
-
 ## 📷 Photos
 
 Every photo on this site is Brayden's own work from Instagram
