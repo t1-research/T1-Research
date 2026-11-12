@@ -6,13 +6,13 @@
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-22-0f766e)
-![Services](https://img.shields.io/badge/services-18-0f766e)
+![Pages](https://img.shields.io/badge/pages-18-0f766e)
+![Services](https://img.shields.io/badge/services-14-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-A 22-page static website for T1 Research & Development — home, about,
-services, contact, and one page for each of the 18 services. All CSS
+An 18-page static website for T1 Research & Development — home, about,
+services, contact, and one page for each of the 14 services. All CSS
 lives in `assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
@@ -23,16 +23,12 @@ no inline styling or scripting, no build step, no dependencies.
 | Link-in-Bio Pages | $9/month |
 | Personal Website | $35/month |
 | Monthly Photo Refresh | $79–$149/month |
-| Home Inventory for Insurance | $149 one-time + $9/month |
 | Parental Controls & Safe Wi-Fi Setup | $99 one-time |
 | Church & Sermon Media Hosting | $29–$49/month |
 | Family Backup | $19/month per household |
 | Tech Help House Calls | $49 per visit or $29/month |
-| Family Security | $99 one-time + $9/month |
 | Smart Home Setup | $99–$199 per visit |
 | Cold Storage Archiving | $19–$29/month |
-| Competitor Watch Report | $49/month |
-| Digitizing & Archiving | Documents $199+/cabinet + $29/month · Photos $199–$499/box + $9/month |
 | Business Backup | $39/month files + $39/month cloud apps |
 | Secure Remote Access (VPN) | $39/month |
 | Managed Game Servers | $19–$49/month per server |
@@ -48,9 +44,9 @@ Premium $749 + $99/mo).
 ```
 ├── index.html            Home — hero, hosting tiers, services preview
 ├── about.html            About Brayden and T1 Research & Development
-├── services.html         All 18 services, one card each
+├── services.html         All 14 services, one card each
 ├── contact.html          Contact form with a service picker
-├── services/             One page per service (18)
+├── services/             One page per service (14)
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script

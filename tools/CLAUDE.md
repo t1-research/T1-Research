@@ -4,7 +4,7 @@ This site is generated. Read this file before changing anything.
 
 ## The one rule that matters most
 
-`build.py` generates all 22 pages (plus `sitemap.xml`, `robots.txt`, and
+`build.py` generates all 18 pages (plus `sitemap.xml`, `robots.txt`, and
 `README.md`) from one Python source. **Never edit the HTML files
 directly — your changes will be wiped the next time `build.py` runs.**
 Edit `tools/build.py` instead.
@@ -40,15 +40,15 @@ detect which layout they're in.)
 - `tools/build.py` — everything: content, templates, page builders. The
   site's single source of truth.
 - `tools/verify.py` — checks: no inline styles/scripts (except JSON-LD),
-  no broken links, SEO tags on all 22 pages, contact form action, 19
-  cards on the services index (18 services + flagship), sitemap coverage.
+  no broken links, SEO tags on all 18 pages, contact form action, 15
+  cards on the services index (14 services + flagship), sitemap coverage.
 - `tools/optimize_images.py` — optimizes new photos into `images/`. Run
   it BEFORE `build.py`, because the builder reads image dimensions at
   build time (every `<img>` gets explicit width/height). It reads
   originals from `photos_raw/`, which lives with Sabrent — new photos
   from Instagram come through him.
 - The site itself: `index.html`, `about.html`, `services.html`,
-  `contact.html`, `services/` (18 pages), `assets/` (`site.css` and
+  `contact.html`, `services/` (14 pages), `assets/` (`site.css` and
   `site.js`, hand-edited — `build.py` never touches them), `images/`
   (the 22 optimized photos), `sitemap.xml`, `robots.txt`, `README.md`.
 - Pulling photos from Instagram stays with Sabrent — that step needs his
@@ -70,7 +70,7 @@ detect which layout they're in.)
   Don't change it.
 - Don't add claims that aren't confirmed: no "most sites live within two
   weeks", no "cancel any time" — unless Brayden confirms them.
-- Services: 18 services in 4 groups — Websites, For Businesses, For Homes
+- Services: 14 services in 4 groups — Websites, For Businesses, For Homes
   & Families, Photography & Media. The `GROUPS` list in `build.py` must
   cover every service exactly once (the builder asserts this), and the
   contact-form dropdown groups must match it.
@@ -88,7 +88,7 @@ detect which layout they're in.)
 
 ## Version naming
 
-Releases are named v0.02, v0.03, v0.04, … (current: v0.08). Commit
+Releases are named v0.02, v0.03, v0.04, … (current: v0.12). Commit
 messages start with the version and a plain summary, e.g.
 "v0.06 grouped the services by who they're for", with a body listing
 every change made.

@@ -36,11 +36,6 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://t1-research.vercel.app/services/home-inventory.html</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
     <loc>https://t1-research.vercel.app/services/parental-controls.html</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -61,27 +56,12 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://t1-research.vercel.app/services/family-security.html</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
     <loc>https://t1-research.vercel.app/services/smart-home.html</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://t1-research.vercel.app/services/cold-storage.html</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://t1-research.vercel.app/services/competitor-watch.html</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://t1-research.vercel.app/services/digitizing.html</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
   </url>

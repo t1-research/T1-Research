@@ -155,23 +155,23 @@ if 'id="fService"' not in contact:
     errors.append("contact.html: service select missing")
 opts = re.findall(r'<option value="([^"]+)"', contact)
 expected = ["website-hosting"] + [
-    "link-in-bio", "personal-website", "photo-refresh", "home-inventory",
-    "parental-controls", "church-hosting", "family-backup", "tech-help",
-    "family-security", "smart-home", "cold-storage", "competitor-watch",
-    "digitizing", "business-backup", "vpn", "game-servers",
+    "link-in-bio", "personal-website", "photo-refresh", "parental-controls",
+    "church-hosting", "family-backup", "tech-help",
+    "smart-home", "cold-storage",
+    "business-backup", "vpn", "game-servers",
     "security-system", "photography"] + ["something-else"]
 for e in expected:
     if e not in opts:
         errors.append(f"contact.html: service option missing: {e}")
 print(f"contact form options: {len(opts)} (expect {len(expected) + 5} incl. placeholders + plans)")
 
-# Services index: 18 service cards + flagship website card
+# Services index: 14 service cards + flagship website card
 with open(os.path.join(SITE, "services.html"), encoding="utf-8") as f:
     services_html = f.read()
 n_cards = services_html.count('class="service-card"')
-print(f"services index cards: {n_cards} (expect 19)")
-if n_cards != 19:
-    errors.append(f"services.html: {n_cards} cards, expected 19")
+print(f"services index cards: {n_cards} (expect 15)")
+if n_cards != 15:
+    errors.append(f"services.html: {n_cards} cards, expected 15")
 
 # Sitemap covers all pages
 with open(os.path.join(SITE, "sitemap.xml"), encoding="utf-8") as f:
