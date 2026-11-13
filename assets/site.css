@@ -239,6 +239,15 @@ p { margin: 0 0 1em; }
 .tier ul { margin: 0 0 1.5rem; padding-left: 1.25rem; color: var(--text-muted); flex-grow: 1; }
 .tier li { margin-bottom: 0.4rem; }
 
+/* ---------- Comparison table (pricing page) ---------- */
+
+.table-wrap { overflow-x: auto; margin: 1.5rem 0 2.5rem; }
+table.compare { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+table.compare th, table.compare td { padding: 0.6rem 0.75rem; text-align: center; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.compare th:first-child, table.compare td:first-child { text-align: left; white-space: normal; }
+table.compare thead th { font-weight: 700; }
+table.compare tbody tr:hover { background: var(--bg-soft); }
+
 /* ---------- FAQ ---------- */
 
 .faq-item { border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 0.75rem; background: var(--card); overflow: hidden; }

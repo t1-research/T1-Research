@@ -122,13 +122,16 @@
 
   // ---------- Service + plan pre-select on the contact page ----------
   // Service pages link here with ?service=<slug>; hosting tier buttons
-  // link with ?plan=<starter|standard|premium> (which also selects the
-  // Website design & hosting service). The plan field only shows when
-  // that service is chosen.
+  // link with ?plan=<brochure|shop|bridge|growth|flagship|flagship-plus>
+  // (which also selects the Website design & hosting service). The plan
+  // field only shows when that service is chosen.
   var plans = {
-    starter: { name: "Starter", setup: 349, monthly: 49 },
-    standard: { name: "Standard", setup: 499, monthly: 75 },
-    premium: { name: "Premium", setup: 749, monthly: 99 }
+    brochure: { name: "Brochure", setup: 155, monthly: 52 },
+    shop: { name: "Shop", setup: 310, monthly: 105 },
+    bridge: { name: "Bridge", setup: 415, monthly: 315 },
+    growth: { name: "Growth", setup: 775, monthly: 520 },
+    flagship: { name: "Flagship", setup: 1550, monthly: 780 },
+    "flagship-plus": { name: "Flagship+", setup: 2575, monthly: 1560 }
   };
   var serviceSelect = document.getElementById("fService");
   var planField = document.getElementById("plan-field");

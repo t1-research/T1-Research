@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Generate the T1 Research & Development multi-page website.
 
-Builds 18 pages (home, about, services, contact + 14 service pages),
-sitemap.xml, robots.txt and a deploy README into the site root.
+Builds 19 pages (home, about, services, contact + 14 service pages
++ Website Design & Hosting), sitemap.xml, robots.txt and a deploy
+README into the site root.
 
 Layout: this script lives in tools/. The site root is the tools/
 directory's parent when that parent holds a site/ directory (Sabrent's
@@ -463,39 +464,75 @@ GROUPS = [
 # Hosting tiers (flagship offer, featured on the home page).
 TIERS = [
     {
-        "key": "starter", "name": "Starter", "setup": 349, "monthly": 49,
-        "year": 937, "popular": False,
+        "key": "brochure", "name": "Brochure", "setup": 155, "monthly": 52,
+        "year": 779, "popular": False,
         "blurb": "A clean, professional site for a small business getting online.",
         "features": [
             "Up to 5 pages",
             "Mobile-friendly design",
             "Contact form and click-to-call",
-            "Basic care plan — 30 min of changes a month",
+            "Hosting, updates & backups included",
         ],
     },
     {
-        "key": "standard", "name": "Standard", "setup": 499, "monthly": 75,
-        "year": 1399, "popular": True,
-        "blurb": "Our core plan — everything most local businesses need.",
+        "key": "shop", "name": "Shop", "setup": 310, "monthly": 105,
+        "year": 1570, "popular": False,
+        "blurb": "Sell online — a full store with secure checkout.",
         "features": [
-            "Everything in Starter",
-            "Booking or menu integration",
-            "Photo cleanup and optimization",
-            "Monthly report — visitors, calls, and updates",
+            "Everything in Brochure",
+            "Online store, up to 30 products",
+            "Card + PayPal checkout",
+            "Order emails and product updates",
         ],
     },
     {
-        "key": "premium", "name": "Premium", "setup": 749, "monthly": 99,
-        "year": 1937, "popular": False,
-        "blurb": "For businesses that want more pages and more hands-on care.",
+        "key": "bridge", "name": "Bridge", "setup": 415, "monthly": 315,
+        "year": 4195, "popular": True,
+        "blurb": "Your website, plus getting found and never missing a lead.",
         "features": [
-            "Everything in Standard",
-            "Up to 10 pages",
-            "Owner walkthrough when we launch",
-            "2 hours of changes a month, priority response",
+            "Everything in Brochure",
+            "Google Business Profile managed",
+            "Review requests and instant lead alerts",
+            "Business files backed up to the cloud",
+        ],
+    },
+    {
+        "key": "growth", "name": "Growth", "setup": 775, "monthly": 520,
+        "year": 7015, "popular": False,
+        "blurb": "For growing businesses that need their paperwork organized and leads scored.",
+        "features": [
+            "Everything in Bridge",
+            "Job Vault — crews upload contracts & photos",
+            "Smart lead form that scores every inquiry",
+            "Weekly snapshots and basic local SEO",
+        ],
+    },
+    {
+        "key": "flagship", "name": "Flagship", "setup": 1550, "monthly": 780,
+        "year": 10910, "popular": False,
+        "blurb": "The full system: lawsuit-proof records and AI that qualifies your leads.",
+        "features": [
+            "Everything in Growth",
+            "Lawsuit-Proof Vault — 5–7 year locked records",
+            "AI lead qualifier, answers in seconds",
+            "Real-time SMS alerts on every hot lead",
+        ],
+    },
+    {
+        "key": "flagship-plus", "name": "Flagship+", "setup": 2575, "monthly": 1560,
+        "year": 21295, "popular": False,
+        "blurb": "Never miss a call or a lead — AI answers, you close the job.",
+        "features": [
+            "Everything in Flagship",
+            "24/7 AI receptionist answers missed calls",
+            "Contract & warranty AI search",
+            "Paid ads managed (Meta + Google)",
         ],
     },
 ]
+
+# Tiers featured on the home page (the full set lives on pricing.html).
+FEATURED_TIERS = {"brochure", "bridge", "flagship"}
 
 
 # ---------------------------------------------------------------- helpers
@@ -671,6 +708,23 @@ def faq_block(faqs):
     return "\n".join(items)
 
 
+def tier_card(t, depth=""):
+    """One pricing tier card (home page + Website Design & Hosting page)."""
+    pop = " tier-popular" if t["popular"] else ""
+    badge = '<span class="tier-badge">Most popular</span>' if t["popular"] else ""
+    feats = "".join(f"<li>{f}</li>" for f in t["features"])
+    return f"""<div class="card tier{pop}">
+          {badge}
+          <h3>{t['name']}</h3>
+          <p>{t['blurb']}</p>
+          <p class="tier-price">{money(t['setup'])} <small>setup</small></p>
+          <p class="tier-monthly">{money(t['monthly'])}/month care</p>
+          <p class="tier-year">First year: {money(t['year'])}</p>
+          <ul>{feats}</ul>
+          <a class="btn btn-primary btn-block" href="{depth}contact.html?plan={t['key']}">Start with {t['name']}</a>
+        </div>"""
+
+
 # ---------------------------------------------------------------- home page
 
 def build_home():
@@ -693,21 +747,8 @@ def build_home():
     }
     hero = img_tag("hero.jpg", "Sunset over the ocean, photographed by Brayden Downey",
                    cls="hero-photo", lazy=False, fetchpriority="high")
-    tiers = []
-    for t in TIERS:
-        pop = " tier-popular" if t["popular"] else ""
-        badge = '<span class="tier-badge">Most popular</span>' if t["popular"] else ""
-        feats = "".join(f"<li>{f}</li>" for f in t["features"])
-        tiers.append(f"""<div class="card tier{pop}">
-          {badge}
-          <h3>{t['name']}</h3>
-          <p>{t['blurb']}</p>
-          <p class="tier-price">{money(t['setup'])} <small>setup</small></p>
-          <p class="tier-monthly">{money(t['monthly'])}/month care</p>
-          <p class="tier-year">First year: {money(t['year'])}</p>
-          <ul>{feats}</ul>
-          <a class="btn btn-primary btn-block" href="contact.html?plan={t['key']}">Start with {t['name']}</a>
-        </div>""")
+    tiers = "".join(tier_card(t) for t in TIERS
+                    if t["key"] in FEATURED_TIERS)
     content = f"""<main id="main">
     <section class="hero-image">
       {hero}
@@ -726,9 +767,9 @@ def build_home():
         <h2>Websites for local businesses</h2>
         <p class="section-lead">Our flagship service: a professional website for your business, built and hosted by someone local — with a care plan that keeps it fast, updated, and working.</p>
         <div class="grid grid-3">
-          {''.join(tiers)}
+          {tiers}
         </div>
-        <p class="center gap-top"><a class="btn btn-dark" href="contact.html?service=website-hosting">Talk about your website</a></p>
+        <p class="center gap-top"><a class="btn btn-dark" href="services/website-hosting.html">See all 6 plans →</a></p>
       </div>
     </section>
 
@@ -810,13 +851,13 @@ def build_services_index():
     grouped_slugs = [slug for _key, _title, slugs in GROUPS for slug in slugs]
     assert sorted(grouped_slugs) == sorted(by_slug), \
         "GROUPS must cover every service exactly once"
-    # The flagship has no service page of its own — its card links to the
-    # contact form with website hosting preselected.
+    # The flagship has its own page (services/website-hosting.html) with
+    # all six plans; its card links there.
     flagship_card = """<div class="service-card-wrap">
-          <a class="service-card" href="contact.html?service=website-hosting">
+          <a class="service-card" href="services/website-hosting.html">
             <h3>Website Design &amp; Hosting</h3>
             <p>Professional websites for local businesses — designed, hosted, and looked after every month.</p>
-            <span class="price">From $349 setup + $49/mo</span>
+            <span class="price">From $155 setup + $52/mo and up</span>
             <span class="more">Get started →</span>
           </a>
         </div>"""
@@ -851,6 +892,150 @@ def build_services_index():
                  "services.html")
             + header("services") + content + footer())
     write_page("services.html", page)
+
+
+# ---------------------------------------------------------------- flagship page (Website Design & Hosting)
+
+# Feature comparison matrix: (feature label, [one cell per tier]).
+COMPARE_ROWS = [
+    ("Pages", ["Up to 5", "Up to 5", "Up to 10", "Up to 15", "Unlimited", "Unlimited"]),
+    ("Online store", ["—", "✓", "—", "—", "—", "—"]),
+    ("Google Business Profile managed", ["—", "—", "✓", "✓", "✓", "✓"]),
+    ("Review requests", ["—", "—", "✓", "✓", "✓", "✓"]),
+    ("Instant lead alerts", ["—", "—", "✓", "✓", "✓", "✓"]),
+    ("Business file backup", ["—", "—", "✓", "✓", "✓", "✓"]),
+    ("Job Vault (crew uploads)", ["—", "—", "—", "✓", "✓", "✓"]),
+    ("Smart lead form (scoring)", ["—", "—", "—", "✓", "✓", "✓"]),
+    ("Local SEO", ["—", "—", "Google profile", "Basic", "Full", "Full"]),
+    ("Lawsuit-Proof Vault (Object Lock)", ["—", "—", "—", "—", "✓", "✓"]),
+    ("AI lead qualifier", ["—", "—", "—", "—", "✓", "✓"]),
+    ("24/7 AI receptionist", ["—", "—", "—", "—", "—", "✓"]),
+    ("Contract & warranty AI search", ["—", "—", "—", "—", "—", "✓"]),
+    ("Paid ads managed", ["—", "—", "—", "—", "—", "✓"]),
+    ("Snapshots", ["Monthly", "Monthly", "Monthly", "Weekly", "Weekly", "Daily"]),
+]
+
+
+def build_website_hosting_page():
+    depth = "../"
+    rel = "services/website-hosting.html"
+    name = "Website Design & Hosting"
+    short = ("Professional websites for local businesses — designed, "
+             "hosted, and looked after every month.")
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": name,
+        "description": short,
+        "provider": {
+            "@type": "LocalBusiness",
+            "name": SITE_NAME,
+            "telephone": "+1-770-820-7364",
+            "email": EMAIL,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Walton County",
+                "addressRegion": "GA",
+                "addressCountry": "US",
+            },
+        },
+        "areaServed": "Walton County, Georgia",
+        "url": BASE_URL + "/" + rel,
+    }
+    crumbs = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home",
+             "item": BASE_URL + "/index.html"},
+            {"@type": "ListItem", "position": 2, "name": "Services",
+             "item": BASE_URL + "/services.html"},
+            {"@type": "ListItem", "position": 3, "name": name,
+             "item": BASE_URL + "/" + rel},
+        ],
+    }
+    tiers = "".join(tier_card(t, depth=depth) for t in TIERS)
+    head_cells = "".join(f"<th>{t['name']}</th>" for t in TIERS)
+    rows = []
+    for label, cells in COMPARE_ROWS:
+        tds = "".join(f"<td>{c}</td>" for c in cells)
+        rows.append(f"<tr><td>{label}</td>{tds}</tr>")
+    matrix = "\n".join(rows)
+    content = f"""<main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="{depth}index.html">Home</a></li>
+            <li><a href="{depth}services.html">Services</a></li>
+            <li aria-current="page">{name}</li>
+          </ol>
+        </nav>
+        <h1>{name}</h1>
+        <p>{short}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container service-layout">
+        <div class="service-main">
+          <p>Our flagship service: a custom WordPress website for your business, built and hosted by someone local — with a care plan that keeps it fast, updated, and working.</p>
+          <p>The bigger plans go further: a Job Vault that keeps your contracts and job photos organized and lawsuit-proof, AI that qualifies your leads in seconds, and real-time alerts so you never miss a hot lead while you're on the job.</p>
+          <h2>What's included</h2>
+          <ul class="feature-list">
+            <li>Custom WordPress site, designed for your business</li>
+            <li>Hosting, security, backups, and updates included</li>
+            <li>Job Vault — contracts and job photos, organized by job</li>
+            <li>AI lead qualification and real-time alerts (Flagship plans)</li>
+            <li>Support from someone local, by phone or email</li>
+          </ul>
+        </div>
+        <aside class="price-box">
+          <h2 class="no-top">{name}</h2>
+          <p class="price">From $155 setup + $52/mo and up</p>
+          <p>Six plans, from a $155 brochure site to the full Flagship+ system. See the plans below.</p>
+          <a class="btn btn-primary btn-block" href="{depth}contact.html?service=website-hosting">Get in touch about this</a>
+          <p class="center gap-top-sm">Or call <a href="{PHONE_TEL}">{PHONE}</a></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Plans &amp; pricing</h2>
+        <div class="grid grid-3">
+          {tiers}
+        </div>
+        <h2>Compare plans</h2>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead><tr><th>Feature</th>{head_cells}</tr></thead>
+            <tbody>
+              {matrix}
+            </tbody>
+          </table>
+        </div>
+        <h2>How billing works</h2>
+        <p>Setup is a one-time charge for building your site. Your domain is registered in your name — it's yours, and it renews yearly.</p>
+        <p>The monthly fee covers hosting, security, backups, updates, and support. Prices shown include card processing — no extra fee added.</p>
+        <p><a href="{depth}services.html">← See all services</a></p>
+        <p class="center gap-top"><a class="btn btn-primary" href="{depth}contact.html?service=website-hosting">Talk about your website</a></p>
+      </div>
+    </section>
+
+  </main>
+"""
+    # Two JSON-LD blocks: Service + BreadcrumbList.
+    ld_block = ("\n  <script type=\"application/ld+json\">\n"
+                + json.dumps(ld, indent=2)
+                + "\n  </script>\n  <script type=\"application/ld+json\">\n"
+                + json.dumps(crumbs, indent=2) + "\n  </script>")
+    page = (head(f"{name} | {SITE_NAME}",
+                 f"{short} Six plans from $155 setup, with Vault storage and AI lead tools on the Flagship plans. {SITE_NAME}, {CITY}.",
+                 rel)
+            .replace("</head>", ld_block + "\n</head>")
+            + header("services", depth=depth) + content + footer(depth=depth))
+    write_page(rel, page)
 
 
 # ---------------------------------------------------------------- contact page
@@ -912,9 +1097,12 @@ def build_contact():
               <label for="fPlan">Which hosting plan?</label>
               <select id="fPlan" name="plan">
                 <option value="" disabled selected>Choose a plan…</option>
-                <option value="starter">Starter — $349 setup + $49/month</option>
-                <option value="standard">Standard — $499 setup + $75/month</option>
-                <option value="premium">Premium — $749 setup + $99/month</option>
+                <option value="brochure">Brochure — $155 setup + $52/month</option>
+                <option value="shop">Shop — $310 setup + $105/month</option>
+                <option value="bridge">Bridge — $415 setup + $315/month</option>
+                <option value="growth">Growth — $775 setup + $520/month</option>
+                <option value="flagship">Flagship — $1,550 setup + $780/month</option>
+                <option value="flagship-plus">Flagship+ — $2,575 setup + $1,560/month</option>
                 <option value="unsure">Not sure yet</option>
               </select>
             </div>
@@ -1053,6 +1241,7 @@ def build_service_page(svc):
 def build_sitemap_robots_readme():
     pages = ["index.html", "about.html", "services.html", "contact.html"]
     pages += [f"services/{s['slug']}.html" for s in SERVICES]
+    pages += ["services/website-hosting.html"]
     urls = []
     for p in pages:
         freq = "weekly" if p in ("index.html", "services.html") else "monthly"
@@ -1075,13 +1264,14 @@ def build_sitemap_robots_readme():
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-18-0f766e)
+![Pages](https://img.shields.io/badge/pages-19-0f766e)
 ![Services](https://img.shields.io/badge/services-14-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-An 18-page static website for T1 Research & Development — home, about,
-services, contact, and one page for each of the 14 services. All CSS
+A 19-page static website for T1 Research & Development — home, about,
+services, contact, one page for each of the 14 services, and a
+dedicated Website Design & Hosting page with all six plans. All CSS
 lives in `assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
@@ -1091,18 +1281,18 @@ no inline styling or scripting, no build step, no dependencies.
 | ------- | ----- |
 {table_rows}
 
-Plus **website design & hosting**, our flagship — three plans on the
-home page (Starter $349 + $49/mo · Standard $499 + $75/mo ·
-Premium $749 + $99/mo).
+Plus **website design & hosting**, our flagship — six plans on its
+own page (three featured on the home page), from Brochure
+($155 + $52/mo) to Flagship+ ($2,575 + $1,560/mo).
 
 ## 📁 Structure
 
 ```
-├── index.html            Home — hero, hosting tiers, services preview
+├── index.html            Home — hero, featured plans
 ├── about.html            About Brayden and T1 Research & Development
 ├── services.html         All 14 services, one card each
 ├── contact.html          Contact form with a service picker
-├── services/             One page per service (14)
+├── services/             One page per service (14) + Website Design & Hosting
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script
@@ -1140,13 +1330,14 @@ def main():
     build_home()
     build_about()
     build_services_index()
+    build_website_hosting_page()
     build_contact()
     for svc in SERVICES:
         build_service_page(svc)
     build_sitemap_robots_readme()
     n = sum(len(files) for _, _, files in os.walk(SITE))
-    print(f"built {len(SERVICES)} service pages + 4 main pages "
-          f"({n} files total under site/)")
+    print(f"built {len(SERVICES)} service pages + flagship page "
+          f"+ 4 main pages ({n} files total under site/)")
 
 
 if __name__ == "__main__":
