@@ -565,6 +565,9 @@ def head(title, description, path, og_image="hero.jpg", json_ld=None, preload=No
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{description}">
   <meta name="twitter:image" content="{og_url}">{pre}
+  <link rel="icon" type="image/svg+xml" sizes="any" href="{'../' if path.startswith('services/') else ''}favicon.svg">
+  <link rel="icon" type="image/x-icon" href="{'../' if path.startswith('services/') else ''}favicon.ico">
+  <link rel="apple-touch-icon" href="{'../' if path.startswith('services/') else ''}apple-touch-icon.png">
   <link rel="stylesheet" href="{'../' if path.startswith('services/') else ''}assets/site.css">{ld}
   <script src="{'../' if path.startswith('services/') else ''}assets/site.js" defer></script>
 </head>"""

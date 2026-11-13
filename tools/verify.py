@@ -108,6 +108,8 @@ def check_page(rel):
         errors.append(f"{rel}: missing/short meta description")
     if not c.has_canonical:
         errors.append(f"{rel}: missing canonical link")
+    if "favicon.svg" not in html or "favicon.ico" not in html:
+        errors.append(f"{rel}: missing favicon link(s)")
     for prop in ("og:title", "og:description", "og:url", "og:image"):
         if prop not in c.meta:
             errors.append(f"{rel}: missing {prop}")
