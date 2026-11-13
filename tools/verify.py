@@ -178,7 +178,7 @@ expected = ["website-hosting"] + [
 for e in expected:
     if e not in opts:
         errors.append(f"contact.html: service option missing: {e}")
-print(f"contact form options: {len(opts)} (expect {len(expected) + 5} incl. placeholders + plans)")
+print(f"contact form options: {len(opts)} (expect {len(expected) + 7} incl. placeholders + plans)")
 
 # Services index: 14 service cards + flagship website card
 with open(os.path.join(SITE, "services.html"), encoding="utf-8") as f:

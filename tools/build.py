@@ -463,36 +463,69 @@ GROUPS = [
 # Hosting tiers (flagship offer, featured on the home page).
 TIERS = [
     {
-        "key": "starter", "name": "Starter", "setup": 349, "monthly": 49,
-        "year": 937, "popular": False,
+        "key": "brochure", "name": "Brochure", "setup": 155, "monthly": 52,
+        "year": 779, "popular": False,
         "blurb": "A clean, professional site for a small business getting online.",
         "features": [
             "Up to 5 pages",
             "Mobile-friendly design",
             "Contact form and click-to-call",
-            "Basic care plan — 30 min of changes a month",
+            "Hosting, updates & backups included",
         ],
     },
     {
-        "key": "standard", "name": "Standard", "setup": 499, "monthly": 75,
-        "year": 1399, "popular": True,
-        "blurb": "Our core plan — everything most local businesses need.",
+        "key": "shop", "name": "Shop", "setup": 310, "monthly": 105,
+        "year": 1570, "popular": False,
+        "blurb": "Sell online — a full store with secure checkout.",
         "features": [
-            "Everything in Starter",
-            "Booking or menu integration",
-            "Photo cleanup and optimization",
-            "Monthly report — visitors, calls, and updates",
+            "Everything in Brochure",
+            "Online store, up to 30 products",
+            "Card + PayPal checkout",
+            "Order emails and product updates",
         ],
     },
     {
-        "key": "premium", "name": "Premium", "setup": 749, "monthly": 99,
-        "year": 1937, "popular": False,
-        "blurb": "For businesses that want more pages and more hands-on care.",
+        "key": "bridge", "name": "Bridge", "setup": 415, "monthly": 315,
+        "year": 4195, "popular": True,
+        "blurb": "Your website, plus getting found and never missing a lead.",
         "features": [
-            "Everything in Standard",
-            "Up to 10 pages",
-            "Owner walkthrough when we launch",
-            "2 hours of changes a month, priority response",
+            "Everything in Brochure",
+            "Google Business Profile managed",
+            "Review requests and instant lead alerts",
+            "Business files backed up to the cloud",
+        ],
+    },
+    {
+        "key": "growth", "name": "Growth", "setup": 775, "monthly": 520,
+        "year": 7015, "popular": False,
+        "blurb": "For growing businesses that need their paperwork organized and leads scored.",
+        "features": [
+            "Everything in Bridge",
+            "Job Vault — crews upload contracts & photos",
+            "Smart lead form that scores every inquiry",
+            "Weekly snapshots and basic local SEO",
+        ],
+    },
+    {
+        "key": "flagship", "name": "Flagship", "setup": 1550, "monthly": 780,
+        "year": 10910, "popular": False,
+        "blurb": "The full system: lawsuit-proof records and AI that qualifies your leads.",
+        "features": [
+            "Everything in Growth",
+            "Lawsuit-Proof Vault — 5–7 year locked records",
+            "AI lead qualifier, answers in seconds",
+            "Real-time SMS alerts on every hot lead",
+        ],
+    },
+    {
+        "key": "flagship-plus", "name": "Flagship+", "setup": 2575, "monthly": 1560,
+        "year": 21295, "popular": False,
+        "blurb": "Never miss a call or a lead — AI answers, you close the job.",
+        "features": [
+            "Everything in Flagship",
+            "24/7 AI receptionist answers missed calls",
+            "Contract & warranty AI search",
+            "Paid ads managed (Meta + Google)",
         ],
     },
 ]
@@ -723,8 +756,8 @@ def build_home():
 
     <section class="section">
       <div class="container">
-        <h2>Websites for local businesses</h2>
-        <p class="section-lead">Our flagship service: a professional website for your business, built and hosted by someone local — with a care plan that keeps it fast, updated, and working.</p>
+        <h2>Plans &amp; pricing</h2>
+        <p class="section-lead">Start with a website and grow from there. Every plan includes hosting, updates, and support from someone local — the bigger plans add backups, lead tools, and AI that works while you're on the job.</p>
         <div class="grid grid-3">
           {''.join(tiers)}
         </div>
@@ -816,7 +849,7 @@ def build_services_index():
           <a class="service-card" href="contact.html?service=website-hosting">
             <h3>Website Design &amp; Hosting</h3>
             <p>Professional websites for local businesses — designed, hosted, and looked after every month.</p>
-            <span class="price">From $349 setup + $49/mo</span>
+            <span class="price">From $155 setup + $52/mo</span>
             <span class="more">Get started →</span>
           </a>
         </div>"""
@@ -912,9 +945,12 @@ def build_contact():
               <label for="fPlan">Which hosting plan?</label>
               <select id="fPlan" name="plan">
                 <option value="" disabled selected>Choose a plan…</option>
-                <option value="starter">Starter — $349 setup + $49/month</option>
-                <option value="standard">Standard — $499 setup + $75/month</option>
-                <option value="premium">Premium — $749 setup + $99/month</option>
+                <option value="brochure">Brochure — $155 setup + $52/month</option>
+                <option value="shop">Shop — $310 setup + $105/month</option>
+                <option value="bridge">Bridge — $415 setup + $315/month</option>
+                <option value="growth">Growth — $775 setup + $520/month</option>
+                <option value="flagship">Flagship — $1,550 setup + $780/month</option>
+                <option value="flagship-plus">Flagship+ — $2,575 setup + $1,560/month</option>
                 <option value="unsure">Not sure yet</option>
               </select>
             </div>
@@ -1091,9 +1127,9 @@ no inline styling or scripting, no build step, no dependencies.
 | ------- | ----- |
 {table_rows}
 
-Plus **website design & hosting**, our flagship — three plans on the
-home page (Starter $349 + $49/mo · Standard $499 + $75/mo ·
-Premium $749 + $99/mo).
+Plus **website design & hosting**, our flagship — six plans on the
+home page, from Brochure ($155 + $52/mo) to Flagship+ ($2,575 +
+$1,560/mo).
 
 ## 📁 Structure
 

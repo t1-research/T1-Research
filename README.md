@@ -35,9 +35,9 @@ no inline styling or scripting, no build step, no dependencies.
 | Security System Setup & Maintenance | Home $349–$549 setup + $29/month · Business $799–$1,499 setup + $79–$129/month |
 | Photography | Contact for pricing |
 
-Plus **website design & hosting**, our flagship — three plans on the
-home page (Starter $349 + $49/mo · Standard $499 + $75/mo ·
-Premium $749 + $99/mo).
+Plus **website design & hosting**, our flagship — six plans on the
+home page, from Brochure ($155 + $52/mo) to Flagship+ ($2,575 +
+$1,560/mo).
 
 ## 📁 Structure
 
