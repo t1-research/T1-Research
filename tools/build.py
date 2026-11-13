@@ -857,7 +857,7 @@ def build_services_index():
           <a class="service-card" href="services/website-hosting.html">
             <h3>Website Design &amp; Hosting</h3>
             <p>Professional websites for local businesses — designed, hosted, and looked after every month.</p>
-            <span class="price">From $1,550 setup + $780/mo</span>
+            <span class="price">From $155 setup + $52/mo and up</span>
             <span class="more">Get started →</span>
           </a>
         </div>"""
@@ -992,7 +992,7 @@ def build_website_hosting_page():
         </div>
         <aside class="price-box">
           <h2 class="no-top">{name}</h2>
-          <p class="price">From $1,550 setup + $780/mo</p>
+          <p class="price">From $155 setup + $52/mo and up</p>
           <p>Six plans, from a $155 brochure site to the full Flagship+ system. See the plans below.</p>
           <a class="btn btn-primary btn-block" href="{depth}contact.html?service=website-hosting">Get in touch about this</a>
           <p class="center gap-top-sm">Or call <a href="{PHONE_TEL}">{PHONE}</a></p>
