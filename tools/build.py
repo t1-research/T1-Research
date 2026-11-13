@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Generate the T1 Research & Development multi-page website.
 
-Builds 19 pages (home, about, services, pricing, contact + 14 service
-pages), sitemap.xml, robots.txt and a deploy README into the site root.
+Builds 19 pages (home, about, services, contact + 14 service pages
++ Website Design & Hosting), sitemap.xml, robots.txt and a deploy
+README into the site root.
 
 Layout: this script lives in tools/. The site root is the tools/
 directory's parent when that parent holds a site/ directory (Sabrent's
@@ -631,7 +632,6 @@ def header(active, depth=""):
         <div class="nav-body">
           {link("index.html", "Home", "home")}
           {link("services.html", "Services", "services")}
-          {link("pricing.html", "Pricing", "pricing")}
           {link("about.html", "About", "about")}
           <a class="nav-cta" href="{depth}contact.html">Get in touch</a>
         </div>
@@ -656,7 +656,6 @@ def footer(depth=""):
           <p><strong>Pages</strong><br>
           <a href="{depth}index.html">Home</a><br>
           <a href="{depth}services.html">Services</a><br>
-          <a href="{depth}pricing.html">Pricing</a><br>
           <a href="{depth}about.html">About</a><br>
           <a href="{depth}contact.html">Contact</a></p>
         </div>
@@ -709,8 +708,8 @@ def faq_block(faqs):
     return "\n".join(items)
 
 
-def tier_card(t):
-    """One pricing tier card (home page + pricing page)."""
+def tier_card(t, depth=""):
+    """One pricing tier card (home page + Website Design & Hosting page)."""
     pop = " tier-popular" if t["popular"] else ""
     badge = '<span class="tier-badge">Most popular</span>' if t["popular"] else ""
     feats = "".join(f"<li>{f}</li>" for f in t["features"])
@@ -722,7 +721,7 @@ def tier_card(t):
           <p class="tier-monthly">{money(t['monthly'])}/month care</p>
           <p class="tier-year">First year: {money(t['year'])}</p>
           <ul>{feats}</ul>
-          <a class="btn btn-primary btn-block" href="contact.html?plan={t['key']}">Start with {t['name']}</a>
+          <a class="btn btn-primary btn-block" href="{depth}contact.html?plan={t['key']}">Start with {t['name']}</a>
         </div>"""
 
 
@@ -770,7 +769,7 @@ def build_home():
         <div class="grid grid-3">
           {tiers}
         </div>
-        <p class="center gap-top"><a class="btn btn-dark" href="pricing.html">See all 6 plans →</a></p>
+        <p class="center gap-top"><a class="btn btn-dark" href="services/website-hosting.html">See all 6 plans →</a></p>
       </div>
     </section>
 
@@ -852,13 +851,13 @@ def build_services_index():
     grouped_slugs = [slug for _key, _title, slugs in GROUPS for slug in slugs]
     assert sorted(grouped_slugs) == sorted(by_slug), \
         "GROUPS must cover every service exactly once"
-    # The flagship has no service page of its own — its card links to the
-    # pricing page, where all six plans are compared.
+    # The flagship has its own page (services/website-hosting.html) with
+    # all six plans; its card links there.
     flagship_card = """<div class="service-card-wrap">
-          <a class="service-card" href="pricing.html">
+          <a class="service-card" href="services/website-hosting.html">
             <h3>Website Design &amp; Hosting</h3>
             <p>Professional websites for local businesses — designed, hosted, and looked after every month.</p>
-            <span class="price">From $155 setup + $52/mo</span>
+            <span class="price">From $1,550 setup + $780/mo</span>
             <span class="more">Get started →</span>
           </a>
         </div>"""
@@ -895,7 +894,7 @@ def build_services_index():
     write_page("services.html", page)
 
 
-# ---------------------------------------------------------------- pricing page
+# ---------------------------------------------------------------- flagship page (Website Design & Hosting)
 
 # Feature comparison matrix: (feature label, [one cell per tier]).
 COMPARE_ROWS = [
@@ -917,8 +916,45 @@ COMPARE_ROWS = [
 ]
 
 
-def build_pricing():
-    tiers = "".join(tier_card(t) for t in TIERS)
+def build_website_hosting_page():
+    depth = "../"
+    rel = "services/website-hosting.html"
+    name = "Website Design & Hosting"
+    short = ("Professional websites for local businesses — designed, "
+             "hosted, and looked after every month.")
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": name,
+        "description": short,
+        "provider": {
+            "@type": "LocalBusiness",
+            "name": SITE_NAME,
+            "telephone": "+1-770-820-7364",
+            "email": EMAIL,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Walton County",
+                "addressRegion": "GA",
+                "addressCountry": "US",
+            },
+        },
+        "areaServed": "Walton County, Georgia",
+        "url": BASE_URL + "/" + rel,
+    }
+    crumbs = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home",
+             "item": BASE_URL + "/index.html"},
+            {"@type": "ListItem", "position": 2, "name": "Services",
+             "item": BASE_URL + "/services.html"},
+            {"@type": "ListItem", "position": 3, "name": name,
+             "item": BASE_URL + "/" + rel},
+        ],
+    }
+    tiers = "".join(tier_card(t, depth=depth) for t in TIERS)
     head_cells = "".join(f"<th>{t['name']}</th>" for t in TIERS)
     rows = []
     for label, cells in COMPARE_ROWS:
@@ -928,13 +964,45 @@ def build_pricing():
     content = f"""<main id="main">
     <section class="page-hero">
       <div class="container">
-        <h1>Pricing</h1>
-        <p>Six plans, from a simple brochure site to the full AI system for contractors. Every plan includes hosting, updates, and support from someone local.</p>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="{depth}index.html">Home</a></li>
+            <li><a href="{depth}services.html">Services</a></li>
+            <li aria-current="page">{name}</li>
+          </ol>
+        </nav>
+        <h1>{name}</h1>
+        <p>{short}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container service-layout">
+        <div class="service-main">
+          <p>Our flagship service: a custom WordPress website for your business, built and hosted by someone local — with a care plan that keeps it fast, updated, and working.</p>
+          <p>The bigger plans go further: a Job Vault that keeps your contracts and job photos organized and lawsuit-proof, AI that qualifies your leads in seconds, and real-time alerts so you never miss a hot lead while you're on the job.</p>
+          <h2>What's included</h2>
+          <ul class="feature-list">
+            <li>Custom WordPress site, designed for your business</li>
+            <li>Hosting, security, backups, and updates included</li>
+            <li>Job Vault — contracts and job photos, organized by job</li>
+            <li>AI lead qualification and real-time alerts (Flagship plans)</li>
+            <li>Support from someone local, by phone or email</li>
+          </ul>
+        </div>
+        <aside class="price-box">
+          <h2 class="no-top">{name}</h2>
+          <p class="price">From $1,550 setup + $780/mo</p>
+          <p>Six plans, from a $155 brochure site to the full Flagship+ system. See the plans below.</p>
+          <a class="btn btn-primary btn-block" href="{depth}contact.html?service=website-hosting">Get in touch about this</a>
+          <p class="center gap-top-sm">Or call <a href="{PHONE_TEL}">{PHONE}</a></p>
+        </aside>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
+        <h2>Plans &amp; pricing</h2>
         <div class="grid grid-3">
           {tiers}
         </div>
@@ -950,17 +1018,24 @@ def build_pricing():
         <h2>How billing works</h2>
         <p>Setup is a one-time charge for building your site. Your domain is registered in your name — it's yours, and it renews yearly.</p>
         <p>The monthly fee covers hosting, security, backups, updates, and support. Prices shown include card processing — no extra fee added.</p>
-        <p class="center gap-top"><a class="btn btn-primary" href="contact.html?service=website-hosting">Talk about your website</a></p>
+        <p><a href="{depth}services.html">← See all services</a></p>
+        <p class="center gap-top"><a class="btn btn-primary" href="{depth}contact.html?service=website-hosting">Talk about your website</a></p>
       </div>
     </section>
 
   </main>
 """
-    page = (head(f"Pricing | {SITE_NAME}",
-                 "T1 Research & Development pricing — six plans from a $52/month brochure site to the full Flagship+ AI system for contractors. Hosting, updates, and support included.",
-                 "pricing.html")
-            + header("pricing") + content + footer())
-    write_page("pricing.html", page)
+    # Two JSON-LD blocks: Service + BreadcrumbList.
+    ld_block = ("\n  <script type=\"application/ld+json\">\n"
+                + json.dumps(ld, indent=2)
+                + "\n  </script>\n  <script type=\"application/ld+json\">\n"
+                + json.dumps(crumbs, indent=2) + "\n  </script>")
+    page = (head(f"{name} | {SITE_NAME}",
+                 f"{short} Six plans from $155 setup, with Vault storage and AI lead tools on the Flagship plans. {SITE_NAME}, {CITY}.",
+                 rel)
+            .replace("</head>", ld_block + "\n</head>")
+            + header("services", depth=depth) + content + footer(depth=depth))
+    write_page(rel, page)
 
 
 # ---------------------------------------------------------------- contact page
@@ -1164,9 +1239,9 @@ def build_service_page(svc):
 # ---------------------------------------------------------------- sitemap / robots / readme
 
 def build_sitemap_robots_readme():
-    pages = ["index.html", "about.html", "services.html", "pricing.html",
-             "contact.html"]
+    pages = ["index.html", "about.html", "services.html", "contact.html"]
     pages += [f"services/{s['slug']}.html" for s in SERVICES]
+    pages += ["services/website-hosting.html"]
     urls = []
     for p in pages:
         freq = "weekly" if p in ("index.html", "services.html") else "monthly"
@@ -1195,7 +1270,8 @@ def build_sitemap_robots_readme():
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
 A 19-page static website for T1 Research & Development — home, about,
-services, pricing, contact, and one page for each of the 14 services. All CSS
+services, contact, one page for each of the 14 services, and a
+dedicated Website Design & Hosting page with all six plans. All CSS
 lives in `assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
@@ -1205,8 +1281,8 @@ no inline styling or scripting, no build step, no dependencies.
 | ------- | ----- |
 {table_rows}
 
-Plus **website design & hosting**, our flagship — six plans on the
-pricing page (three featured on the home page), from Brochure
+Plus **website design & hosting**, our flagship — six plans on its
+own page (three featured on the home page), from Brochure
 ($155 + $52/mo) to Flagship+ ($2,575 + $1,560/mo).
 
 ## 📁 Structure
@@ -1215,9 +1291,8 @@ pricing page (three featured on the home page), from Brochure
 ├── index.html            Home — hero, featured plans
 ├── about.html            About Brayden and T1 Research & Development
 ├── services.html         All 14 services, one card each
-├── pricing.html          All 6 plans, side by side
 ├── contact.html          Contact form with a service picker
-├── services/             One page per service (14)
+├── services/             One page per service (14) + Website Design & Hosting
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script
@@ -1255,14 +1330,14 @@ def main():
     build_home()
     build_about()
     build_services_index()
-    build_pricing()
+    build_website_hosting_page()
     build_contact()
     for svc in SERVICES:
         build_service_page(svc)
     build_sitemap_robots_readme()
     n = sum(len(files) for _, _, files in os.walk(SITE))
-    print(f"built {len(SERVICES)} service pages + 5 main pages "
-          f"({n} files total under site/)")
+    print(f"built {len(SERVICES)} service pages + flagship page "
+          f"+ 4 main pages ({n} files total under site/)")
 
 
 if __name__ == "__main__":
