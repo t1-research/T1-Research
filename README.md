@@ -6,13 +6,13 @@
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-18-0f766e)
+![Pages](https://img.shields.io/badge/pages-19-0f766e)
 ![Services](https://img.shields.io/badge/services-14-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-An 18-page static website for T1 Research & Development — home, about,
-services, contact, and one page for each of the 14 services. All CSS
+A 19-page static website for T1 Research & Development — home, about,
+services, pricing, contact, and one page for each of the 14 services. All CSS
 lives in `assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
@@ -36,15 +36,16 @@ no inline styling or scripting, no build step, no dependencies.
 | Photography | Contact for pricing |
 
 Plus **website design & hosting**, our flagship — six plans on the
-home page, from Brochure ($155 + $52/mo) to Flagship+ ($2,575 +
-$1,560/mo).
+pricing page (three featured on the home page), from Brochure
+($155 + $52/mo) to Flagship+ ($2,575 + $1,560/mo).
 
 ## 📁 Structure
 
 ```
-├── index.html            Home — hero, hosting tiers, services preview
+├── index.html            Home — hero, featured plans
 ├── about.html            About Brayden and T1 Research & Development
 ├── services.html         All 14 services, one card each
+├── pricing.html          All 6 plans, side by side
 ├── contact.html          Contact form with a service picker
 ├── services/             One page per service (14)
 ├── assets/
