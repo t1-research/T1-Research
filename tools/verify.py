@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Verify the generated site: no inline styles/scripts (outside JSON-LD,
-the GTM setup block, and the pre-existing standalone mocks), no broken
-internal links or images, SEO tags present on every page, form wired correctly."""
+"""Verify the generated site: no inline styles/scripts (outside JSON-LD
+and the pre-existing standalone mocks), no broken internal links or
+images (including <source> srcset and preload imagesrcset entries),
+SEO tags present on every page, form wired correctly, GTM loading
+deferred from site.js only."""
 import os
 import re
 import sys
@@ -56,6 +58,18 @@ class Checker(HTMLParser):
                 errors.append(f"{self.path}: img without alt: {d['src']}")
             if "width" not in d or "height" not in d:
                 warnings.append(f"{self.path}: img without dimensions: {d['src']}")
+        if tag == "source" and d.get("srcset"):
+            # <picture> WebP sources: every srcset URL must resolve.
+            for part in d["srcset"].split(","):
+                url = part.strip().split(" ")[0]
+                if url:
+                    self.images.append(url)
+        if tag == "link" and d.get("imagesrcset"):
+            # Hero preload: every imagesrcset URL must resolve.
+            for part in d["imagesrcset"].split(","):
+                url = part.strip().split(" ")[0]
+                if url:
+                    self.images.append(url)
         if tag == "script":
             self.scripts.append(d.get("src", "INLINE"))
             if d.get("type") == "application/ld+json":
@@ -63,8 +77,9 @@ class Checker(HTMLParser):
             elif d.get("src"):
                 pass  # external script (site.js, GTM loader)
             else:
-                # Inline script: allowed only for the GTM setup block
-                # (dataLayer/gtag); judged on its content at </script>.
+                # Inline script: not allowed. (GTM used to be an
+                # exception; since v0.23 it loads deferred from
+                # site.js — see the GTM check below.)
                 self.pending_inline = True
                 self.pending_data = ""
         if tag == "title":
@@ -80,8 +95,7 @@ class Checker(HTMLParser):
             self.in_title = False
         if tag == "script" and self.pending_inline:
             self.pending_inline = False
-            if "dataLayer" not in self.pending_data or "gtag" not in self.pending_data:
-                errors.append(f"{self.path}: inline <script> (not JSON-LD)")
+            errors.append(f"{self.path}: inline <script> (not JSON-LD)")
 
     def handle_data(self, data):
         if self.in_title:
@@ -129,6 +143,9 @@ def check_page(rel):
                    "month-to-month after the first year"):
         if banned in html.lower():
             errors.append(f"{rel}: contains unconfirmed claim: '{banned}'")
+    # GTM must not load from any page — it lives deferred in site.js only.
+    if "googletagmanager.com" in html:
+        errors.append(f"{rel}: GTM reference in page HTML (must load from site.js only)")
     return c
 
 
@@ -187,6 +204,16 @@ n_cards = services_html.count('class="service-card"')
 print(f"services index cards: {n_cards} (expect 15)")
 if n_cards != 15:
     errors.append(f"services.html: {n_cards} cards, expected 15")
+
+# GTM: the deferred loader lives in site.js only — container ID, the
+# gtm.js URL, the dataLayer setup, and the idle trigger must all be there.
+with open(os.path.join(SITE, "assets", "site.js"), encoding="utf-8") as f:
+    site_js = f.read()
+for needle in ("GTM-WBZLTTZM", "googletagmanager.com/gtm.js",
+               "window.dataLayer", "requestIdleCallback",
+               "gtag(\"js\", new Date())"):
+    if needle not in site_js:
+        errors.append(f"assets/site.js: GTM loader missing: {needle}")
 
 # Sitemap covers all pages
 with open(os.path.join(SITE, "sitemap.xml"), encoding="utf-8") as f:

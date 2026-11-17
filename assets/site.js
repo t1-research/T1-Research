@@ -5,6 +5,41 @@
 (function () {
   "use strict";
 
+  // ---------- Google Tag Manager (deferred) ----------
+  // GTM (container GTM-WBZLTTZM) used to load in <head> on every page,
+  // where it fought the hero photo and stylesheet for bandwidth. Now it
+  // loads only once the browser is idle after the page finishes, or on
+  // the visitor's first scroll, tap, click, or keypress — whichever
+  // comes first. Trade-off (accepted): a visitor who leaves within a
+  // second or two without touching anything may not be counted.
+  // The dataLayer + gtag setup from the original snippet is preserved
+  // here verbatim; only the timing changed.
+  (function loadGTM() {
+    var loaded = false;
+    function inject() {
+      if (loaded) return;
+      loaded = true;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtm.js?id=GTM-WBZLTTZM";
+      document.head.appendChild(s);
+    }
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag("js", new Date());
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(inject, { timeout: 4000 });
+    } else {
+      setTimeout(inject, 2000);
+    }
+    ["scroll", "touchstart", "click", "keydown"].forEach(function (evt) {
+      window.addEventListener(evt, inject, { once: true, passive: true });
+    });
+  })();
+
   // ---------- Sticky header shadow ----------
   var header = document.querySelector(".site-header");
   function onScroll() {

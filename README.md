@@ -51,7 +51,8 @@ own page (three featured on the home page), from Brochure
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script
-├── images/               16 optimized @t1.research photos
+├── images/               22 optimized @t1.research photos
+│                         (responsive WebP + JPEG fallback)
 ├── sitemap.xml
 └── robots.txt
 ```
@@ -66,7 +67,8 @@ open http://localhost:8000). No build step — the files are the site.
 
 Every photo on this site is Brayden's own work from Instagram
 [@t1.research](https://www.instagram.com/t1.research), optimized for
-the web (hero 1440px, gallery 1200px, progressive JPEG).
+the web: responsive WebP (400/800/1200px, hero up to 1440px) with a
+progressive JPEG fallback for older browsers.
 
 ## 📞 Contact
 

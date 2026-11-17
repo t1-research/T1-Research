@@ -1,0 +1,85 @@
+{
+  "headers": [
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ],
+      "source": "/images/(.*)"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ],
+      "source": "/assets/(.*)"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ],
+      "source": "/favicon.svg"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ],
+      "source": "/favicon.ico"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ],
+      "source": "/favicon-16x16.png"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ],
+      "source": "/favicon-32x32.png"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ],
+      "source": "/apple-touch-icon.png"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ],
+      "source": "/"
+    },
+    {
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ],
+      "source": "/(.*).html"
+    }
+  ]
+}

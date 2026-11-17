@@ -48,6 +48,11 @@ body {
 }
 
 img { max-width: 100%; height: auto; }
+/* Every photo sits in a <picture> (WebP srcset + JPEG fallback). The
+   wrapper must not disturb layout: display: contents makes the img
+   inside behave exactly as if it were a direct child — gallery grid
+   sizing, hero absolute positioning, and aspect ratios all unchanged. */
+picture { display: contents; }
 
 a { color: var(--teal); }
 a:hover { color: var(--teal-bright); }
