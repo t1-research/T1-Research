@@ -59,6 +59,16 @@ ICON_NEXTDOOR = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="tr
 # browser idle or first interaction. The container ID lives there now,
 # not here — see site.js "Google Tag Manager (deferred)".
 
+# WebP switch. The responsive WebP variants exist in Sabrent's working
+# copy (optimize_images.py generates them) but they are BINARIES, and
+# the GitHub connector can only push text — so they reach the repo only
+# when Brayden drags them in on github.com. Until they are in the repo,
+# this MUST stay False: a <picture> whose matched WebP source 404s does
+# NOT fall back to the <img> JPEG, so the image just breaks. When False,
+# img_tag() emits a plain full-size <img> and the hero preloads the
+# JPEG. Flip to True after the WebP upload, rebuild, and re-verify.
+WEBP_ENABLED = False
+
 # ---------------------------------------------------------------- services
 # Order: Brayden's difficulty order, easiest first. Photography is #18.
 
@@ -569,7 +579,10 @@ def img_tag(name, alt, depth="", cls="", lazy=True, fetchpriority="",
     """A <picture> with a WebP-first srcset and the JPEG as the fallback
     for old browsers. Keeps explicit dimensions (prevents layout shift).
     sizes describes the image's display width at each viewport — pass
-    the real value at each call site (hero: 100vw; feature: 728px)."""
+    the real value at each call site (hero: 100vw; feature: 728px).
+    While WEBP_ENABLED is False (WebP files not yet in the repo), emits
+    a plain full-size <img> instead — a <picture> whose matched WebP
+    source 404s does NOT fall back to the JPEG."""
     w, h = img_size(name)
     attrs = [f'src="{depth}images/{name}"', f'alt="{alt}"',
              f'width="{w}"', f'height="{h}"']
@@ -580,6 +593,8 @@ def img_tag(name, alt, depth="", cls="", lazy=True, fetchpriority="",
         attrs.append('decoding="async"')
     if fetchpriority:
         attrs.append(f'fetchpriority="{fetchpriority}"')
+    if not WEBP_ENABLED:
+        return "<img " + " ".join(attrs) + ">"
     return (f'<picture><source type="image/webp" '
             f'srcset="{_webp_srcset(name, depth)}" sizes="{sizes}">'
             f"<img " + " ".join(attrs) + "></picture>")
@@ -607,16 +622,21 @@ def head(title, description, path, og_image="hero.jpg", json_ld=None, preload=No
         robots_meta = f'\n  <meta name="robots" content="{robots}">'
     pre = ""
     if preload:
-        # Preload the same WebP srcset the hero <picture> uses, so the
-        # browser fetches exactly one hero file (a preload that doesn't
-        # match the img's srcset can download the big file twice).
-        variants = webp_variants(preload)
-        stem = preload.rsplit(".", 1)[0]
-        srcset = ", ".join(
-            f"images/{stem}-{vw}.webp {vw}w" for vw in variants)
-        pre = (f'\n  <link rel="preload" as="image" type="image/webp" '
-               f'href="images/{stem}-{variants[-1]}.webp" '
-               f'imagesrcset="{srcset}" imagesizes="100vw">')
+        if WEBP_ENABLED:
+            # Preload the same WebP srcset the hero <picture> uses, so the
+            # browser fetches exactly one hero file (a preload that doesn't
+            # match the img's srcset can download the big file twice).
+            variants = webp_variants(preload)
+            stem = preload.rsplit(".", 1)[0]
+            srcset = ", ".join(
+                f"images/{stem}-{vw}.webp {vw}w" for vw in variants)
+            pre = (f'\n  <link rel="preload" as="image" type="image/webp" '
+                   f'href="images/{stem}-{variants[-1]}.webp" '
+                   f'imagesrcset="{srcset}" imagesizes="100vw">')
+        else:
+            # No WebP in the repo yet: preload the full-size JPEG.
+            pre = (f'\n  <link rel="preload" as="image" '
+                   f'href="images/{preload}">')
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
