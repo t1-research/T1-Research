@@ -215,13 +215,19 @@ for needle in ("GTM-WBZLTTZM", "googletagmanager.com/gtm.js",
     if needle not in site_js:
         errors.append(f"assets/site.js: GTM loader missing: {needle}")
 
-# Sitemap covers all pages
+# Sitemap covers all pages except deliberately unlisted ones
+# (terms-of-use.html: no nav link, no sitemap entry, noindex — the
+# guest Wi-Fi portal links to it directly).
+UNLISTED = {"terms-of-use.html"}
 with open(os.path.join(SITE, "sitemap.xml"), encoding="utf-8") as f:
     sitemap = f.read()
 n_urls = sitemap.count("<url>")
-print(f"sitemap urls: {n_urls} (expect {len(pages)})")
-if n_urls != len(pages):
-    errors.append(f"sitemap has {n_urls} urls, site has {len(pages)} pages")
+n_expected = len(pages) - len([p for p in pages if p in UNLISTED])
+print(f"sitemap urls: {n_urls} (expect {n_expected}; "
+      f"{len(pages)} pages incl. {len(UNLISTED)} unlisted)")
+if n_urls != n_expected:
+    errors.append(f"sitemap has {n_urls} urls, site has {len(pages)} pages "
+                  f"({len(UNLISTED)} unlisted)")
 
 print()
 for w in warnings:
