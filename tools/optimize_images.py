@@ -1,7 +1,22 @@
 #!/usr/bin/env python3
-"""Optimize selected @t1.research photos for the new T1 website.
-Hero at 1600px wide, everything else at 1200px wide, progressive JPEG.
-Run once; outputs into site/images/."""
+"""Generate responsive WebP variants of the @t1.research photos for the
+T1 website (v0.23). Reads originals from photos_raw/, writes into
+site/images/ alongside the existing progressive JPEGs.
+
+Variants per photo: 400 / 800 / 1200px wide, plus the native width
+when it is meaningfully larger than the biggest standard variant
+(the 1440px hero gets a 1440 variant; the 812px pansy does not get a
+redundant 812 variant next to its 800).
+
+The existing JPEGs are NOT re-saved: they already live in the repo,
+and the push tool cannot carry binaries, so rewriting them here would
+only create local/remote drift. A JPEG is generated only if it is
+missing entirely (fresh setup).
+
+field.jpg is skipped for WebP: it is orphaned (no page references it)
+and due for deletion (#5 in the performance report) — no point
+generating variants for a file that is about to go.
+"""
 import os
 from PIL import Image
 
@@ -17,6 +32,11 @@ else:
 SRC = os.path.join(PARENT, "photos_raw")
 DST = os.path.join(SITE, "images")
 os.makedirs(DST, exist_ok=True)
+
+WEBP_WIDTHS = (400, 800, 1200)
+WEBP_QUALITY = 80
+# Orphaned images: no page references them — skip their WebP variants.
+SKIP_WEBP = {"field.jpg"}
 
 # (source post id, output name, max width, jpeg quality)
 IMAGES = [
@@ -45,16 +65,40 @@ IMAGES = [
     ("18389630749103223", "g-neon-storefront.jpg", 1200, 80), # neon storefront at night
 ]
 
-total = 0
+
+def webp_widths(native_w):
+    """Widths of the WebP variants for a photo of native width native_w:
+    400/800/1200 below the native width, plus the native width itself
+    when it is more than 5% above the biggest standard variant."""
+    variants = [w for w in WEBP_WIDTHS if w < native_w]
+    if not variants or native_w - variants[-1] > 0.05 * native_w:
+        variants.append(native_w)
+    return variants
+
+
+total_webp = 0
+n_webp = 0
 for pid, name, max_w, q in IMAGES:
     src = os.path.join(SRC, f"{pid}.jpg")
-    dst = os.path.join(DST, name)
+    dst_jpg = os.path.join(DST, name)
     im = Image.open(src).convert("RGB")
     if im.width > max_w:
         im = im.resize((max_w, int(im.height * max_w / im.width)), Image.LANCZOS)
-    im.save(dst, "JPEG", quality=q, optimize=True, progressive=True)
-    size = os.path.getsize(dst)
-    total += size
-    print(f"{name}: {im.size[0]}x{im.size[1]} {size // 1024}KB")
+    if not os.path.exists(dst_jpg):
+        im.save(dst_jpg, "JPEG", quality=q, optimize=True, progressive=True)
+        print(f"{name}: JPEG generated {im.size[0]}x{im.size[1]} (was missing)")
+    if name in SKIP_WEBP:
+        print(f"{name}: WebP skipped (orphaned — no page references it)")
+        continue
+    stem = name.rsplit(".", 1)[0]
+    for w in webp_widths(im.width):
+        variant = im if w == im.width else im.resize(
+            (w, int(im.height * w / im.width)), Image.LANCZOS)
+        out = os.path.join(DST, f"{stem}-{w}.webp")
+        variant.save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+        size = os.path.getsize(out)
+        total_webp += size
+        n_webp += 1
+        print(f"{stem}-{w}.webp: {variant.size[0]}x{variant.size[1]} {size // 1024}KB")
 
-print(f"total: {total // 1024}KB across {len(IMAGES)} images")
+print(f"total WebP: {total_webp // 1024}KB across {n_webp} files")

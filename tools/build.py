@@ -15,7 +15,8 @@ easiest-to-hardest order) plus Photography as the 14th service.
 Website design & hosting is the flagship offer, featured on the home
 page; it is also a choice in the contact form's service picker.
 Photos are Brayden's own @t1.research Instagram photography, already
-optimized into site/images/ by optimize_images.py.
+optimized into site/images/ by optimize_images.py (progressive JPEGs
+plus responsive WebP variants).
 """
 import json
 import os
@@ -53,14 +54,10 @@ ICON_FACEBOOK = '<svg width="26" height="26" viewBox="0 0 24 24" fill="currentCo
 # so the footer uses the app-icon "n" in Nextdoor green (#8ED500) instead.
 ICON_NEXTDOOR = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="#8ED500"/><path d="M8 17.5V11a4 4 0 0 1 8 0v6.5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/></svg>'
 
-# Google Tag Manager (Brayden's container GTM-WBZLTTZM). Verbatim snippet he
-# supplied Nov 12 — kept as a constant because the braces would break f-strings.
-GTM_HEAD = """  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WBZLTTZM"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  </script>"""
+# Google Tag Manager (Brayden's container GTM-WBZLTTZM) is NOT in the
+# head any more (v0.23): it loads deferred from assets/site.js, on
+# browser idle or first interaction. The container ID lives there now,
+# not here — see site.js "Google Tag Manager (deferred)".
 
 # ---------------------------------------------------------------- services
 # Order: Brayden's difficulty order, easiest first. Photography is #18.
@@ -548,8 +545,31 @@ def img_size(name):
     return _img_cache[name]
 
 
-def img_tag(name, alt, depth="", cls="", lazy=True, fetchpriority=""):
-    """An <img> with explicit dimensions (prevents layout shift)."""
+def webp_variants(name):
+    """Widths of the WebP variants for an image: 400/800/1200 below the
+    native width, plus the native width itself when it is more than 5%
+    above the biggest standard variant (the 1440px hero gets a 1440
+    variant; the 812px pansy does not get a redundant 812 next to 800).
+    Must match optimize_images.py's webp_widths()."""
+    w, _ = img_size(name)
+    variants = [x for x in (400, 800, 1200) if x < w]
+    if not variants or w - variants[-1] > 0.05 * w:
+        variants.append(w)
+    return variants
+
+
+def _webp_srcset(name, depth=""):
+    stem = name.rsplit(".", 1)[0]
+    return ", ".join(
+        f"{depth}images/{stem}-{w}.webp {w}w" for w in webp_variants(name))
+
+
+def img_tag(name, alt, depth="", cls="", lazy=True, fetchpriority="",
+            sizes="(max-width: 640px) 100vw, 356px"):
+    """A <picture> with a WebP-first srcset and the JPEG as the fallback
+    for old browsers. Keeps explicit dimensions (prevents layout shift).
+    sizes describes the image's display width at each viewport — pass
+    the real value at each call site (hero: 100vw; feature: 728px)."""
     w, h = img_size(name)
     attrs = [f'src="{depth}images/{name}"', f'alt="{alt}"',
              f'width="{w}"', f'height="{h}"']
@@ -560,7 +580,9 @@ def img_tag(name, alt, depth="", cls="", lazy=True, fetchpriority=""):
         attrs.append('decoding="async"')
     if fetchpriority:
         attrs.append(f'fetchpriority="{fetchpriority}"')
-    return "<img " + " ".join(attrs) + ">"
+    return (f'<picture><source type="image/webp" '
+            f'srcset="{_webp_srcset(name, depth)}" sizes="{sizes}">'
+            f"<img " + " ".join(attrs) + "></picture>")
 
 
 def money(n):
@@ -569,8 +591,10 @@ def money(n):
 
 # ---------------------------------------------------------------- templates
 
-def head(title, description, path, og_image="hero.jpg", json_ld=None, preload=None):
-    """The <head> block: SEO meta, Open Graph, canonical, JSON-LD."""
+def head(title, description, path, og_image="hero.jpg", json_ld=None, preload=None, robots=None):
+    """The <head> block: SEO meta, Open Graph, canonical, JSON-LD.
+    robots: optional robots meta content (e.g. "noindex, nofollow" for
+    unlisted pages like the guest Wi-Fi Terms of Use)."""
     canon = BASE_URL + "/" + path
     og_url = BASE_URL + "/images/" + og_image
     ld = ""
@@ -578,19 +602,28 @@ def head(title, description, path, og_image="hero.jpg", json_ld=None, preload=No
         ld = ('\n  <script type="application/ld+json">\n'
               + json.dumps(json_ld, indent=2)
               + "\n  </script>")
+    robots_meta = ""
+    if robots:
+        robots_meta = f'\n  <meta name="robots" content="{robots}">'
     pre = ""
     if preload:
-        w, h = img_size(preload)
-        pre = (f'\n  <link rel="preload" as="image" href="images/{preload}" '
-               f'imagesrcset="images/{preload} {w}w" imagesizes="100vw">')
+        # Preload the same WebP srcset the hero <picture> uses, so the
+        # browser fetches exactly one hero file (a preload that doesn't
+        # match the img's srcset can download the big file twice).
+        variants = webp_variants(preload)
+        stem = preload.rsplit(".", 1)[0]
+        srcset = ", ".join(
+            f"images/{stem}-{vw}.webp {vw}w" for vw in variants)
+        pre = (f'\n  <link rel="preload" as="image" type="image/webp" '
+               f'href="images/{stem}-{variants[-1]}.webp" '
+               f'imagesrcset="{srcset}" imagesizes="100vw">')
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-{GTM_HEAD}
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
-  <meta name="description" content="{description}">
+  <meta name="description" content="{description}">{robots_meta}
   <link rel="canonical" href="{canon}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{SITE_NAME}">
@@ -746,7 +779,8 @@ def build_home():
         "sameAs": [INSTAGRAM, FACEBOOK, NEXTDOOR],
     }
     hero = img_tag("hero.jpg", "Sunset over the ocean, photographed by Brayden Downey",
-                   cls="hero-photo", lazy=False, fetchpriority="high")
+                   cls="hero-photo", lazy=False, fetchpriority="high",
+                   sizes="100vw")
     tiers = "".join(tier_card(t) for t in TIERS
                     if t["key"] in FEATURED_TIERS)
     content = f"""<main id="main">
@@ -786,7 +820,7 @@ def build_home():
 
 def build_about():
     photo = img_tag("about-field.jpg", "Sunset over a Georgia field, photographed by Brayden Downey",
-                    cls="about-photo")
+                    cls="about-photo", sizes="(max-width: 640px) 100vw, 540px")
     portraits = (
         img_tag("g-portrait-wisteria.jpg", "Portrait under wisteria on a downtown sidewalk")
         + "\n          "
@@ -1166,9 +1200,13 @@ def build_service_page(svc):
     if svc.get("gallery"):
         og_image = "g-sunset-red.jpg"
         figs = []
-        for name, alt in svc["gallery"]:
+        for i, (name, alt) in enumerate(svc["gallery"]):
+            # First figure is the CSS feature (spans 2 cols, ~728px);
+            # the rest are ~356px thumbnails.
+            sizes = ("(max-width: 860px) 100vw, 728px" if i == 0
+                     else "(max-width: 640px) 100vw, (max-width: 860px) 50vw, 356px")
             figs.append(f"""<figure>
-              {img_tag(name, alt, depth=depth)}
+              {img_tag(name, alt, depth=depth, sizes=sizes)}
               <figcaption>{alt}</figcaption>
             </figure>""")
         extra = f"""
@@ -1236,6 +1274,77 @@ def build_service_page(svc):
     write_page(rel, page)
 
 
+# ---------------------------------------------------------------- terms of use (unlisted)
+
+def build_terms():
+    """Terms of Use for the guest Wi-Fi portal. UNLISTED: no nav or
+    footer link, no sitemap entry, noindex — reachable only by the
+    direct link Brayden gives the Deco captive portal."""
+    content = """<main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <h1>Terms of Use — Guest Wi-Fi</h1>
+        <p>T1 Research &amp; Development &middot; Effective November 22, 2026</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="legal">
+          <h2>1. Your session</h2>
+          <p>Guest Wi-Fi access is complimentary and limited to <strong>one hour per session</strong>. Speeds are limited to <strong>10 Mbps up and down</strong>. When your hour ends, your connection will drop. You can start a new session by reconnecting and accepting these terms again. Access may be withdrawn at any time.</p>
+
+          <h2>2. Accepting these terms</h2>
+          <p>By connecting to the guest network, you agree to these terms. If you don&rsquo;t agree, don&rsquo;t connect.</p>
+
+          <h2>3. Use the network lawfully</h2>
+          <p>Use the guest network for lawful purposes only. In particular, don&rsquo;t:</p>
+          <ul>
+            <li>Do anything illegal under Georgia or federal law.</li>
+            <li>Download or share copyrighted material without permission.</li>
+            <li>Harass, threaten, or impersonate anyone.</li>
+            <li>Send spam or bulk unsolicited messages.</li>
+            <li>Hack, probe, or try to access other devices on the network.</li>
+            <li>Spread malware or run attacks from the network.</li>
+            <li>Resell, share, or extend access beyond your own devices.</li>
+            <li>Use the network so heavily that it degrades it for everyone else — large torrents, crypto mining, and running servers included.</li>
+          </ul>
+
+          <h2>4. No guarantees</h2>
+          <p>Access is provided as-is. We don&rsquo;t guarantee availability, speed, or that your connection won&rsquo;t drop. The network may be changed, limited, or switched off at any time, without notice.</p>
+
+          <h2>5. Look after your own security</h2>
+          <p>The guest network is shared with other guests. Don&rsquo;t assume your traffic is private. Avoid banking or other sensitive logins unless you&rsquo;re using a VPN, and keep your device&rsquo;s firewall and updates on. You&rsquo;re responsible for the security of your own device and data.</p>
+
+          <h2>6. What we monitor</h2>
+          <p>We may log connection times, data usage, and the addresses your device contacts, to keep the network running and investigate abuse. We don&rsquo;t read the content of your messages or emails.</p>
+
+          <h2>7. Our liability</h2>
+          <p>To the fullest extent allowed by Georgia law, T1 Research &amp; Development isn&rsquo;t liable for any loss or damage from using — or not being able to use — the guest network, including lost data, security breaches on your device, or interruptions to your work.</p>
+
+          <h2>8. Ending access</h2>
+          <p>We can end your access at any time, for any reason, without notice — including if we believe these terms have been broken.</p>
+
+          <h2>9. Changes to these terms</h2>
+          <p>We may update these terms. The version at this address is the one that applies.</p>
+
+          <h2>10. Governing law</h2>
+          <p>These terms are governed by the laws of the State of Georgia.</p>
+
+          <h2>11. Questions</h2>
+          <p>Contact us at <a href="mailto:tasikxdevelopment@gmail.com">tasikxdevelopment@gmail.com</a> or <a href="tel:+17708207364">(770) 820-7364</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+"""
+    page = (head(f"Terms of Use &mdash; Guest Wi-Fi | {SITE_NAME}",
+                 "Terms of use for complimentary guest Wi-Fi access from T1 Research & Development in Walton County, Georgia. Sessions are limited to one hour.",
+                 "terms-of-use.html", robots="noindex, nofollow")
+            + header("terms") + content + footer())
+    write_page("terms-of-use.html", page)
+
+
 # ---------------------------------------------------------------- sitemap / robots / readme
 
 def build_sitemap_robots_readme():
@@ -1264,15 +1373,17 @@ def build_sitemap_robots_readme():
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-19-0f766e)
+![Pages](https://img.shields.io/badge/pages-20-0f766e)
 ![Services](https://img.shields.io/badge/services-14-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-A 19-page static website for T1 Research & Development — home, about,
-services, contact, one page for each of the 14 services, and a
-dedicated Website Design & Hosting page with all six plans. All CSS
-lives in `assets/site.css` and all JavaScript in `assets/site.js` —
+A 20-page static website for T1 Research & Development — home, about,
+services, contact, one page for each of the 14 services, a dedicated
+Website Design & Hosting page with all six plans, and an unlisted
+Terms of Use page for the guest Wi-Fi portal (no nav link, no sitemap
+entry — reachable only by its direct URL). All CSS lives in
+`assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
 ## ✨ Services
@@ -1292,11 +1403,13 @@ own page (three featured on the home page), from Brochure
 ├── about.html            About Brayden and T1 Research & Development
 ├── services.html         All 14 services, one card each
 ├── contact.html          Contact form with a service picker
+├── terms-of-use.html     Terms of Use for guest Wi-Fi (unlisted)
 ├── services/             One page per service (14) + Website Design & Hosting
 ├── assets/
 │   ├── site.css          The only stylesheet
 │   └── site.js           The only script
-├── images/               16 optimized @t1.research photos
+├── images/               22 optimized @t1.research photos
+│                         (responsive WebP + JPEG fallback)
 ├── sitemap.xml
 └── robots.txt
 ```
@@ -1311,7 +1424,8 @@ open http://localhost:8000). No build step — the files are the site.
 
 Every photo on this site is Brayden's own work from Instagram
 [@t1.research](https://www.instagram.com/t1.research), optimized for
-the web (hero 1440px, gallery 1200px, progressive JPEG).
+the web: responsive WebP (400/800/1200px, hero up to 1440px) with a
+progressive JPEG fallback for older browsers.
 
 ## 📞 Contact
 
@@ -1332,6 +1446,7 @@ def main():
     build_services_index()
     build_website_hosting_page()
     build_contact()
+    build_terms()
     for svc in SERVICES:
         build_service_page(svc)
     build_sitemap_robots_readme()
