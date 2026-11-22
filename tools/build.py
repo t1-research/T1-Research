@@ -67,7 +67,7 @@ ICON_NEXTDOOR = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="tr
 # NOT fall back to the <img> JPEG, so the image just breaks. When False,
 # img_tag() emits a plain full-size <img> and the hero preloads the
 # JPEG. Flip to True after the WebP upload, rebuild, and re-verify.
-WEBP_ENABLED = False
+WEBP_ENABLED = True
 
 # ---------------------------------------------------------------- services
 # Order: Brayden's difficulty order, easiest first. Photography is #18.
