@@ -77,6 +77,14 @@ p { margin: 0 0 1em; }
   font-size: 1.1rem;
 }
 
+/* Long-form legal pages (Terms of Use): narrow measure, generous
+   spacing between numbered sections. */
+.legal { max-width: 760px; margin: 0 auto; }
+.legal h2 { font-size: 1.35rem; margin-top: 2rem; }
+.legal h2:first-child { margin-top: 0; }
+.legal ul { margin: 0 0 1em; padding-left: 1.4rem; }
+.legal li { margin-bottom: 0.4em; }
+
 /* ---------- Header / nav ---------- */
 
 .site-header {

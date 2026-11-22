@@ -6,15 +6,17 @@
 
 ![Sunset over the ocean, photographed by Brayden Downey](images/hero.jpg)
 
-![Pages](https://img.shields.io/badge/pages-19-0f766e)
+![Pages](https://img.shields.io/badge/pages-20-0f766e)
 ![Services](https://img.shields.io/badge/services-14-0f766e)
 ![Build](https://img.shields.io/badge/build-none%20needed-0f766e)
 ![Photos](https://img.shields.io/badge/photos-100%25%20original-0f766e)
 
-A 19-page static website for T1 Research & Development — home, about,
-services, contact, one page for each of the 14 services, and a
-dedicated Website Design & Hosting page with all six plans. All CSS
-lives in `assets/site.css` and all JavaScript in `assets/site.js` —
+A 20-page static website for T1 Research & Development — home, about,
+services, contact, one page for each of the 14 services, a dedicated
+Website Design & Hosting page with all six plans, and an unlisted
+Terms of Use page for the guest Wi-Fi portal (no nav link, no sitemap
+entry — reachable only by its direct URL). All CSS lives in
+`assets/site.css` and all JavaScript in `assets/site.js` —
 no inline styling or scripting, no build step, no dependencies.
 
 ## ✨ Services
@@ -47,6 +49,7 @@ own page (three featured on the home page), from Brochure
 ├── about.html            About Brayden and T1 Research & Development
 ├── services.html         All 14 services, one card each
 ├── contact.html          Contact form with a service picker
+├── terms-of-use.html     Terms of Use for guest Wi-Fi (unlisted)
 ├── services/             One page per service (14) + Website Design & Hosting
 ├── assets/
 │   ├── site.css          The only stylesheet
